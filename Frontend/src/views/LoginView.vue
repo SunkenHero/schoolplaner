@@ -89,7 +89,6 @@ button:hover {
   background-color: hsla(160, 70%, 37%, 1);
 }
 
-/* Active (pressed) state */
 button:active {
     background-color: hsla(160, 45%, 37%, 1);
 }
