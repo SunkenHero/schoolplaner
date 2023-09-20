@@ -44,6 +44,7 @@
 }
 
 .text {
+    user-select: none;
     font-weight: 600;
     font-size: 32px;
     margin-bottom: 15px;
