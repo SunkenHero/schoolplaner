@@ -1,0 +1,10 @@
+Login page /login
+
+Hausaufgaben page /
+
+Crud
+Hausaufgaben erstellen /homework/create
+Hausaufgaben löschen /homework/edit{id}
+Hausaufgaben update /homework/update/{id}
+Hausaufgaben get /homework/get
+Hausaufgaeb get/{id} /homework/get/{id}

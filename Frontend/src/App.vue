@@ -3,43 +3,84 @@ import { RouterLink, RouterView } from 'vue-router'
 </script>
 
 <template>
-  <header>
-
-    <div class="wrapper">
-      <HelloWorld msg="You did it!" />
-
-      <nav>
+  <div class="container">
+    <text class="title">Schulplaner</text>
+    <nav class="nav">
+      <div class="navigation">
         <RouterLink to="/">Home</RouterLink>
         <RouterLink to="/about">About</RouterLink>
-      </nav>
-    </div>
-  </header>
-
-  <RouterView />
+      </div>
+      <div class="profile">
+        <RouterLink to="/login">Login</RouterLink>
+      </div>
+    </nav>
+  </div>
+  <RouterView/>
 </template>
 
 <style>
-nav {
-  width: 150%;
-  font-size: 20px;
-  margin-top: 2rem;
+
+.nav {
+  justify-content: space-between;
+  display:flex;
+  flex-direction: row;
+  width: 100%;
 }
 
-nav a.router-link-exact-active {
+.container {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  user-select: none;
+}
+
+.title {
+  font-size: 30px;
+  font-weight: 550;
+  margin-right: 10px;
+}
+
+.navigation {
+  font-size: 20px;
+  margin-top: 2rem;
+  height: 60px;
+}
+
+.navigation .router-link-exact-active {
   color: var(--color-text);
 }
 
-nav a.router-link-exact-active:hover {
+.navigation .router-link-exact-active:hover {
   background-color: transparent;
 }
 
-nav a {
+.navigation a {
   display: inline-block;
   padding: 0 1rem;
   border-left: 1px solid var(--color-border);
 }
 
-nav a:first-of-type {
+.navigation a:first-of-type {
   border: 0;
 }
+
+.profile{
+  font-size: 20px;
+  margin-top: 2rem;
+  height: 60px;
+}
+
+.profile .router-link-exact-active {
+  color: var(--color-text);
+}
+
+.profile .router-link-exact-active:hover {
+  background-color: transparent;
+}
+
+.profile a {
+  display: inline-block;
+  padding: 0 1rem;
+}
+
 </style>
