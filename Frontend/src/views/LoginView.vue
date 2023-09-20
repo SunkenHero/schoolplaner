@@ -81,6 +81,17 @@ input {
     border: 0px;
     border-radius: 20px;
     margin-bottom: 13px;
+    transition: background-color 0.25s;
+    cursor: pointer;
+}
+
+button:hover {
+  background-color: hsla(160, 70%, 37%, 1);
+}
+
+/* Active (pressed) state */
+button:active {
+    background-color: hsla(160, 45%, 37%, 1);
 }
 
 </style>
