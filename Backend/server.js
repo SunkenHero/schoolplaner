@@ -15,16 +15,12 @@ app.delete('/hausaufgabe/{id}', (req, res) => {
   res.send('Logout')
 });
 
-app.update('/update', (req, res) => {
-  res.send('Update')
-});
-
 app.put('/put', (req, res) => { 
   res.send('Put')
 });
 
 app.listen(port, () => {
-  console.log('Listening on port ${port}')
+  console.log('Listening on port ' + String(port))
 })
 
 console.log("sui")
