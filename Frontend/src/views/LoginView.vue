@@ -8,7 +8,7 @@
                     <Text class="text">Login</Text>
                     <input class="name-input" type="text" name="Nutzername" placeholder="Nutzername">
                     <input class="password-input" type="password" name="Passwort" placeholder="Password">
-                    <button class="submit-button" type="submit">Anmelden</button>
+                    <button class="submit-button" type="submit">Login</button>
                 </div>
             </form>
         </div>
@@ -40,7 +40,7 @@
     display:flex;
     justify-content: center;
     align-items: center;
-    box-shadow: 2px 6px 15px 6px rgba(0, 0, 0, 0.5);
+    box-shadow: 0px 6px 15px 6px rgba(0, 0, 0, 0.5);
 }
 
 .text {
