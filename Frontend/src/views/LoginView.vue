@@ -74,6 +74,8 @@ input {
 .submit-button {
     width: 200px;
     height: 40px;
+    font-size: 20px;
+    padding-bottom: 3px;
     background-color: var(--color-green);
     border: 0px;
     border-radius: 20px;
