@@ -6,6 +6,7 @@ require('dotenv').config();
 const secretKey = process.env.KEY;
 
 exports.Auth = function(req, res){
+  
 },
 
 

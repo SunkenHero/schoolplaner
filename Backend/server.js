@@ -2,7 +2,6 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const auth = require('./auth.js');
 const jwt = require('jsonwebtoken');
-const e = require('express');
 
 const app = express();
 
