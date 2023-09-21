@@ -2,10 +2,8 @@ import { Text } from 'vue';
 
 <template>
   <div class="about">
-    <pre>
-      <h1 class="header">About Page</h1>
-      <p class="github"><a href="https://github.com/SunkenHero/schoolplaner/tree/main">Github</a></p>
-    </pre>
+    <h1 class="header">About Page</h1>
+    <p class="github"><a href="https://github.com/SunkenHero/schoolplaner/tree/main">Github</a></p>
   </div>
 </template>
 
@@ -14,6 +12,7 @@ import { Text } from 'vue';
 .about {
   display:flex;
   justify-content: center;
+  align-items: center;
 }
 
 .header {
