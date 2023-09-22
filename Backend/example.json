@@ -1,10 +1,10 @@
-{
-    "tobias.weiss": {
-        "password-hash": "dfoph45saß093utfg89azf098efzve7",
-        "UUID": "97gret498asd3r35"
-    },
-    "yuki.schaefer": {
-        "password-hash": "fd9867874zrt7fdzt988uzds7898dsfzsd89fz",
-        "UUID": "osd897fzs9o87s32"
+    {
+        "tobias.weiss": {
+            "password-hash": "dfoph45saß093utfg89azf098efzve7",
+            "UUID": "97gret498asd3r35"
+        },
+        "yuki.schaefer": {
+            "password-hash": "fd9867874zrt7fdzt988uzds7898dsfzsd89fz",
+            "UUID": "osd897fzs9o87s32"
+        }
     }
-}

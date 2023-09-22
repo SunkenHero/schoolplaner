@@ -1,5 +1,6 @@
 const crypto = require('crypto')
 const sqlite3 = require('sqlite3').verbose();
+const format = require('date-format');
 const db = new sqlite3.Database('db/userdb.sqlite');
 
 db.serialize(() => {
@@ -70,10 +71,13 @@ db.serialize(() => {
     }
 
     exports.createHomework = function createHomework(name, description, date){
+        var Date1 = new Date(date);
+        Date1 = format('yyyy-MM-dd', Date1);
         const insertHomework = db.prepare("INSERT INTO homework (name, description, date) VALUES (?, ?, ?)");
-        const Date = new Date(date);
-        insertHomework.run(name, description, )
+        
+        insertHomework.run(name, description, Date1)
         insertHomework.finalize();
+        console.log(Date1);
     }
     
     exports.listUsers = function listUsers() {
