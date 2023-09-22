@@ -1,11 +1,11 @@
 <script startup>
 </script>
 <template>
-    <div class="menu">
+    <div class="menu-screen">
         <div class="box">
             <form method="post">
                 <div class="form-group">
-                    <Text class="text">Login</Text>
+                    <p class="text">Login</p>
                     <input class="name-input" type="text" name="Nutzername" placeholder="Nutzername">
                     <input class="password-input" type="password" name="Passwort" placeholder="Password">
                     <button class="submit-button" type="submit">Login</button>
@@ -25,7 +25,7 @@
     align-items: center;
 }
 
-.menu {
+.menu-screen {
     margin-top: 50px;
     width: 100%;
     height: 100%;
@@ -40,7 +40,7 @@
     display:flex;
     justify-content: center;
     align-items: center;
-    box-shadow: 0px 6px 15px 6px rgba(0, 0, 0, 0.5);
+    box-shadow: 0px 5px 10px 6px rgba(0, 0, 0, 0.5);
 }
 
 .text {
@@ -61,7 +61,7 @@ input {
     align-self: center;
     padding-left: 10px;
     padding-right: 10px;
-    padding-bottom: 2px;
+    padding-bottom: 0px;
 }
 
 .name-input {
