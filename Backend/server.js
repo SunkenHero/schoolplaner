@@ -18,15 +18,15 @@ app.get('/api', (req, res) => {
 
 app.use('/api/*', auth.isAuth);
 
-app.get('/api/homeworken', (req, res) => {
-  
-});
-
-app.post('/api/homework', (req, res) => {
+app.get('/api/homework', (req, res) => {
   
 });
 
 app.get('/api/homework/:id', (req, res) => {
+  
+});
+
+app.post('/api/homework', (req, res) => {
   
 });
 

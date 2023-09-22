@@ -5,6 +5,8 @@ const db = new sqlite3.Database('db/userdb.sqlite');
 db.serialize(() => {
     db.run("CREATE TABLE IF NOT EXISTS users (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, password TEXT, uuid TEXT)");
 
+    db.run("CREATE TABLE IF NOT EXISTS homework (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, description TEXT, createdate DATE default current_timestamp, date DATE)")
+    
     exports.createUser = function createUser(name, password) {
         db.get("SELECT id FROM users WHERE name = ?", name, (err, row) => {
             if (err) {
@@ -43,6 +45,35 @@ db.serialize(() => {
                 callback(!!row, row);
             }
         });
+    }
+
+    exports.getAllHomework = function getAllHomework(callback){
+        db.each("SELECT * FROM homework", (err,row) =>{
+            if (err) {
+                console.error(err.message);
+                callback(null);
+            } else {
+                callback(row);
+            }
+        });
+    }
+
+    exports.getHomework = function getHomework(id, callback){
+        db.get("SELECT * FROM homework WHERE id = ?", id,(err,row)=>{
+            if (err) {
+                console.error(err.message);
+                callback(null);
+            } else {
+                callback(row);
+            }
+        });
+    }
+
+    exports.createHomework = function createHomework(name, description, date){
+        const insertHomework = db.prepare("INSERT INTO homework (name, description, date) VALUES (?, ?, ?)");
+        const Date = new Date()
+        insertHomework.run(name, description, )
+        insertHomework.finalize();
     }
     
     exports.listUsers = function listUsers() {

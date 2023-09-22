@@ -21,3 +21,9 @@ db.auth("tobias.weiss", "testpasswd", (authenticated, result) => {
         console.log("Authentication failed");
     }
 });
+
+db.createHomework("Test", "Test des", "2002-12-02")
+
+db.getAllHomework((result) =>{
+    console.log(result)
+})
