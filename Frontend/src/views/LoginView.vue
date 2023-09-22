@@ -8,7 +8,7 @@
                     <p class="text">Login</p>
                     <input class="name-input" type="text" name="Nutzername" placeholder="Nutzername">
                     <input class="password-input" type="password" name="Passwort" placeholder="Password">
-                    <button class="submit-button" type="submit">Anmelden</button>
+                    <button class="submit-button" type="submit">Login</button>
                 </div>
             </form>
         </div>
@@ -41,9 +41,11 @@
     justify-content: center;
     align-items: center;
     box-shadow: 0px 5px 10px 6px rgba(0, 0, 0, 0.5);
+    box-shadow: 0px 6px 15px 6px rgba(0, 0, 0, 0.5);
 }
 
 .text {
+    user-select: none;
     font-weight: 600;
     font-size: 32px;
     margin-bottom: 15px;
@@ -80,6 +82,16 @@ input {
     border: 0px;
     border-radius: 20px;
     margin-bottom: 13px;
+    transition: background-color 0.25s;
+    cursor: pointer;
+}
+
+button:hover {
+  background-color: hsla(160, 70%, 37%, 1);
+}
+
+button:active {
+    background-color: hsla(160, 45%, 37%, 1);
 }
 
 </style>
