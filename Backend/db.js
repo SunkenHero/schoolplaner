@@ -1,8 +1,7 @@
-const sqlite3 = require('sqlite3').verbose();
-let db = new sqlite3.Database('./db/database.db', (err) => {
-    if (err) {
-      console.error(err.message);
-    }else{
-    console.log('Connected to the database.');
-    }
-});
+const { JsonDB , Config} = require('node-json-db');
+
+var db = new JsonDB(new Config("./db/HomerworkDb", true, false, '/'));
+var Userdb = new JsonDB(new Config("./db/UserDb", true, false, '/'));
+
+db.push("/id","super test");
+Userdb.push("/id","super test");
