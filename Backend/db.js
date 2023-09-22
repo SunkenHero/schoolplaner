@@ -1,4 +1,4 @@
-import { JsonDB, Config } from 'node-json-db';
+const { JsonDB , Config} = require('node-json-db');
 
 var db = new JsonDB(new Config("./db/HomerworkDb", true, false, '/'));
 var Userdb = new JsonDB(new Config("./db/UserDb", true, false, '/'));
