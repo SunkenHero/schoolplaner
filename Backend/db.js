@@ -71,7 +71,7 @@ db.serialize(() => {
 
     exports.createHomework = function createHomework(name, description, date){
         const insertHomework = db.prepare("INSERT INTO homework (name, description, date) VALUES (?, ?, ?)");
-        const Date = new Date()
+        const Date = new Date(date);
         insertHomework.run(name, description, )
         insertHomework.finalize();
     }
