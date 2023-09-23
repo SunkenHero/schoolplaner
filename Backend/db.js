@@ -6,7 +6,7 @@ const db = new sqlite3.Database('db/userdb.sqlite');
 db.serialize(() => {
     db.run("CREATE TABLE IF NOT EXISTS users (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, password TEXT, uuid TEXT)");
 
-    db.run("CREATE TABLE IF NOT EXISTS homework (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, description TEXT, createdate DATE default current_timestamp, date DATE)")
+    db.run("CREATE TABLE IF NOT EXISTS homework (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, description TEXT, fertig BOOL default 0, createdate DATE default current_timestamp, date DATE)")
     
     exports.createUser = function createUser(name, password) {
         db.get("SELECT id FROM users WHERE name = ?", name, (err, row) => {
@@ -49,37 +49,75 @@ db.serialize(() => {
     }
 
     exports.getAllHomework = function getAllHomework(callback){
-        db.each("SELECT * FROM homework", (err,row) =>{
+        db.all("SELECT * FROM homework", (err,result) =>{
             if (err) {
                 console.error(err.message);
-                callback(null);
+                callback(err,null);
             } else {
-                callback(row);
+                callback(null,result);
             }
         });
     }
 
-    exports.getHomework = function getHomework(id, callback){
+    exports.getHomework = function getHomework(req, callback){
+        const id = req.params.id;
         db.get("SELECT * FROM homework WHERE id = ?", id,(err,row)=>{
             if (err) {
                 console.error(err.message);
-                callback(null);
+                callback(err,null);
             } else {
-                callback(row);
+                callback(null,row);
             }
         });
     }
 
-    exports.createHomework = function createHomework(name, description, date){
+    exports.createHomework = function createHomework(req, callback){
+        const name = req.body.name;
+        const description = req.body.description;
+        const date = req.body.date;
+
         var Date1 = new Date(date);
         Date1 = format('yyyy-MM-dd', Date1);
-        const insertHomework = db.prepare("INSERT INTO homework (name, description, date) VALUES (?, ?, ?)");
-        
-        insertHomework.run(name, description, Date1)
-        insertHomework.finalize();
-        console.log(Date1);
+        db.get("INSERT INTO homework (name, description, date) VALUES (?, ?, ?)", name, description, Date1, (err, row) => {
+            if (err) {
+                console.error(err.message);
+                callback(err,false);
+            } else {
+                callback(null,true);
+            }
+        });
+    }
+
+    exports.updateHomework = function updateHomework(req, callback){
+        const id = req.params.id;
+        const name = req.body.name;
+        const description = req.body.description;
+        const date = req.body.date;
+
+        var Date1 = new Date(date);
+        Date1 = format('yyyy-MM-dd', Date1);
+        db.get("UPDATE homework SET name = ?, description = ?, date = ? WHERE id = ?", name, description, Date1, id, (err, row) => {
+            if (err) {
+                console.error(err.message);
+                callback(err,false);
+            } else {
+                callback(null,true);
+            }
+        });
     }
     
+    exports.deleteHomework = function deleteHomework(req, callback){
+        const id = req.params.id;
+        db.get("DELETE FROM homework WHERE id = ?", id, (err, row) => {
+            if (err) {
+                console.error(err.message);
+                callback(err,false);
+            } else {
+                callback(null,true);
+            }
+        });
+    }
+
     exports.listUsers = function listUsers() {
         db.each("SELECT id, name, password, uuid FROM users", (err, row) => {
             if (err) {

@@ -1,7 +1,8 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-const auth = require('./auth.js');
 const jwt = require('jsonwebtoken');
+const auth = require('./auth.js');
+const db = require('./db.js');
 
 const app = express();
 
@@ -19,19 +20,37 @@ app.get('/api', (req, res) => {
 app.use('/api/*', auth.isAuth);
 
 app.get('/api/homework', (req, res) => {
-  
+    db.getAllHomework((err, result)=>{
+        if(err) {
+            res.json({message: "Error"})
+        } else {
+            res.json(result)
+        }
+    })
 });
 
 app.get('/api/homework/:id', (req, res) => {
-  
+    db.getHomework(req, (err, result)=>{
+        if (err) {
+            res.json({message: "Error"})
+        } else {
+            res.json(result)
+        }
+        });
 });
 
 app.post('/api/homework', (req, res) => {
-  
+    db.createHomework(req, (err, result)=>{
+        if (err) {
+            res.json({message: "Error"})
+        } else {
+            res.json({message: "Success"})
+        }
+    });
 });
 
 app.put('/api/homework/:id/', (req, res) => {
- 
+    
 });
 
 app.delete('/api/homework/:id/', (req, res) => {

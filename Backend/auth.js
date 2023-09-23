@@ -29,7 +29,7 @@ exports.isAuth = function(req, res, next){
     if (!token) {
         log.normalLog(req.originalUrl,req.method,token,'Missing token');
         return res.status(401).json({ message: 'Missing token' });
-}
+    }
 
     try {
         jwt.verify(token, secretKey);

@@ -22,6 +22,6 @@ db.auth("tobias.weiss", "testpasswd", (authenticated, result) => {
     }
 });
 
-db.getAllHomework((result) =>{
+db.getAllHomework((err, result) =>{
     console.log(result)
 })
