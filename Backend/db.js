@@ -6,7 +6,7 @@ const db = new sqlite3.Database('db/userdb.sqlite');
 db.serialize(() => {
     db.run("CREATE TABLE IF NOT EXISTS users (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, password TEXT, uuid TEXT)");
 
-    db.run("CREATE TABLE IF NOT EXISTS homework (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, description TEXT, fertig BOOL default 0, createdate DATE default current_timestamp, date DATE)")
+    db.run("CREATE TABLE IF NOT EXISTS homework (id INTEGER PRIMARY KEY AUTOINCREMENT,fach TEXT, name TEXT, description TEXT, fertig BOOL default 0, createdate DATE default current_timestamp, date DATE)")
     
     exports.createUser = function createUser(name, password) {
         db.get("SELECT id FROM users WHERE name = ?", name, (err, row) => {
@@ -72,13 +72,14 @@ db.serialize(() => {
     }
 
     exports.createHomework = function createHomework(req, callback){
+        const fach = req.body.fach;
         const name = req.body.name;
         const description = req.body.description;
         const date = req.body.date;
 
         var Date1 = new Date(date);
         Date1 = format('yyyy-MM-dd', Date1);
-        db.get("INSERT INTO homework (name, description, date) VALUES (?, ?, ?)", name, description, Date1, (err, row) => {
+        db.get("INSERT INTO homework (fach, name, description, date) VALUES (?, ?, ?)", fach, name, description, Date1, (err, row) => {
             if (err) {
                 console.error(err.message);
                 callback(err,false);
@@ -89,6 +90,7 @@ db.serialize(() => {
     }
 
     exports.updateHomework = function updateHomework(req, callback){
+        const fach = req.body.fach;
         const id = req.params.id;
         const name = req.body.name;
         const description = req.body.description;
@@ -96,7 +98,7 @@ db.serialize(() => {
 
         var Date1 = new Date(date);
         Date1 = format('yyyy-MM-dd', Date1);
-        db.get("UPDATE homework SET name = ?, description = ?, date = ? WHERE id = ?", name, description, Date1, id, (err, row) => {
+        db.get("UPDATE homework SET fach = ? name = ?, description = ?, date = ? WHERE id = ?", fach, name, description, Date1, id, (err, row) => {
             if (err) {
                 console.error(err.message);
                 callback(err,false);

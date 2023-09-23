@@ -1,6 +1,5 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-const jwt = require('jsonwebtoken');
 const auth = require('./auth.js');
 const db = require('./db.js');
 
@@ -69,11 +68,11 @@ app.delete('/api/homework/:id/', (req, res) => {
     });
 });
 
-app.get('/decode', (req, res) => {
+/*app.get('/decode', (req, res) => {
   const token = req.header('Authorization').replace('Bearer ', '');
   const decoded = jwt.decode(token);
   res.json(decoded);
-});
+});*/
 
 const port = process.env.PORT || 3000;
 
