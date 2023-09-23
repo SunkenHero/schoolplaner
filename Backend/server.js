@@ -50,11 +50,23 @@ app.post('/api/homework', (req, res) => {
 });
 
 app.put('/api/homework/:id/', (req, res) => {
-    
+    db.updateHomework(req, (err, result)=>{
+        if (err) {
+            res.json({message: "Error"})
+        } else {
+            res.json({message: "Success"})
+        }
+    });
 });
 
 app.delete('/api/homework/:id/', (req, res) => {
-  
+    db.deleteHomework(req, (err, result)=>{
+        if (err) {
+            res.json({message: "Error"})
+        } else {
+            res.json({message: "Success"})
+        }
+    });
 });
 
 app.get('/decode', (req, res) => {

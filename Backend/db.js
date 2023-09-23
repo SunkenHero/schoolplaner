@@ -49,7 +49,7 @@ db.serialize(() => {
     }
 
     exports.getAllHomework = function getAllHomework(callback){
-        db.all("SELECT * FROM homework", (err,result) =>{
+        db.all("SELECT * FROM homework WHERE fertig = 0", (err,result) =>{
             if (err) {
                 console.error(err.message);
                 callback(err,null);
@@ -108,7 +108,7 @@ db.serialize(() => {
     
     exports.deleteHomework = function deleteHomework(req, callback){
         const id = req.params.id;
-        db.get("DELETE FROM homework WHERE id = ?", id, (err, row) => {
+        db.get("UPDATE homework SET fertig = 1 WHERE id = ?", id, (err, row) => {
             if (err) {
                 console.error(err.message);
                 callback(err,false);
