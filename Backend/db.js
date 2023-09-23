@@ -38,6 +38,7 @@ db.serialize(() => {
     }
 
     exports.auth = function auth(name, password, callback) {
+
         db.get("SELECT * FROM users WHERE name = ? AND password = ?", name, password, (err, row) => {
             if (err) {
                 console.error(err.message);

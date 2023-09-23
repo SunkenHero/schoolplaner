@@ -38,6 +38,15 @@
   --color-green: hsla(160, 100%, 37%, 1);
 }
 
+:root {
+  --table-background: rgb(38, 37, 43);
+  --table-background-light: rgb(46, 46, 54);
+  --table-white-text: rgb(255, 255, 255);
+  --table-black-text: rgb(0, 0, 0);
+  --table-accent: rgb(0, 178, 135);
+  --table-spacer: rgb(25, 24, 29);
+}
+
 @media (prefers-color-scheme: dark) {
   :root {
     --color-background: var(--vt-c-black);

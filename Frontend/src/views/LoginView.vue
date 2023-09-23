@@ -1,16 +1,44 @@
-<script startup>
+<script>
+    import { Text } from 'vue'; 
+    import router from '../router'
+    export default {
+        name: 'LoginView',
+        data() {
+            return {
+                name: "",
+                passwort: ""
+            };
+        },
+    components: { Text },
+    methods: {
+        login() {
+            console.log(this.name + " " + this.passwort);
+            const requestOptions = {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ name: this.name, passwort: this.passwort })
+            };
+
+            fetch("http://10.8.0.4:3000/auth", requestOptions)
+                .then(response => response.json())
+                .then(data => {
+                    localStorage.setItem('token', data.token)
+                    console.log(localStorage.getItem('token'))
+                });
+            router.push('/')
+        }
+    }
+}
 </script>
 <template>
     <div class="menu-screen">
         <div class="box">
-            <form method="post">
-                <div class="form-group">
-                    <p class="text">Login</p>
-                    <input class="name-input" type="text" name="Nutzername" placeholder="Nutzername">
-                    <input class="password-input" type="password" name="Passwort" placeholder="Password">
-                    <button class="submit-button" type="submit">Login</button>
-                </div>
-            </form>
+            <div class="form-group">
+                <p class="text">Login</p>
+                <input class="name-input" type="text" name="Nutzername" placeholder="Nutzername" v-model="name">
+                <input class="password-input" type="password" name="Passwort" placeholder="Password" v-model="passwort">
+                <button class="submit-button" type="submit" v-on:click="login()">Login</button>
+            </div> 
         </div>
     </div>
 </template>

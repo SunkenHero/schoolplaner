@@ -7,10 +7,14 @@
   font-weight: normal;
 }
 
+input:focus{
+    outline: 2px solid var(--color-green);
+}
+
 a,
 .green {
   text-decoration: none;
-  color: hsla(160, 100%, 37%, 1);
+  color: var(--color-green);
   transition: 0.4s;
 }
 

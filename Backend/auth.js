@@ -8,13 +8,14 @@ const secretKey = process.env.KEY;
 
 exports.Auth = function(req, res){
     db.auth( req.body.name, req.body.passwort, (authenticated, result) => {
+        console.log(req.body.name, req.body.passwort)
         if (authenticated) {
             const tokenPayload = {
               id: result.id,
               name: result.name,
               uuid: result.uuid
             };
-            jwt.sign(tokenPayload, secretKey)
+            res.json({token: jwt.sign(tokenPayload, secretKey)});
             console.log("Authentication successful");
         } else {
             console.log("Authentication failed");

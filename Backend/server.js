@@ -2,10 +2,12 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const auth = require('./auth.js');
 const db = require('./db.js');
+const cors = require('cors');
 
 const app = express();
 
 app.use(bodyParser.json());
+app.use(cors())
 
 
 app.post('/auth', auth.Auth );
