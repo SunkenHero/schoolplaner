@@ -25,3 +25,19 @@ db.auth("tobias.weiss", "testpasswd", (authenticated, result) => {
 db.getAllHomework((err, result) =>{
     console.log(result)
 })
+
+
+req = {
+    body: {
+        fach: "test",
+        name: "test",
+        date: "2020-12-29",
+        fertig: 0
+    }
+}
+
+
+db.createHomework(req, (err, result) =>{
+    console.log(result)
+    }
+);

@@ -1,42 +1,135 @@
-<script setup>
+<script>
+export default {
+    name: 'HomeView',
+    data() {
+        return {
+            data: [[], [], [], [], []],
+            newdate: "",
+            date: "",
+            day: 0,
+            selectday: 0
+        };
+    },
 
+    methods:{
+        getData() {
+            const requestOptions = {
+                method: "GET",
+                headers: { "Content-Type": "application/json",
+                            "Authorization": "Bearer " + localStorage.getItem('token')},
+            };
+
+            fetch("http://10.8.0.4:3000/api/homework", requestOptions)
+                .then(response => response.json())
+                .then(data => {
+                    const date = this.date
+                    date.setHours(0, 0, 0, 0);
+                    date.setDate(date.getDate() - 2);
+                    for (const item of data) {
+                        const parsedDate = new Date(item.date);
+                        parsedDate.setHours(0, 0, 0, 0);
+                        if (date.getFullYear() == parsedDate.getFullYear() && date.getMonth() == parsedDate.getMonth()) {
+                            const diff = parsedDate.getTime() - date.getTime();
+                            if (diff >= 0 && diff <= 518400000) {
+                                var day = parsedDate.getDay() - 1;
+                                if (day == -1 || day > 4){
+                                    day = 1;
+                                }
+                                this.data[day].push(item);
+                            }
+                        }
+                    }
+                }
+            );
+        }
+    },
+
+    computed: {
+        tbody() {
+            const tbody = document.createElement("tbody");
+            var biggest = 0;
+            for (var items in this.data) {
+                items = parseInt(items);
+                for (var item in this.data[items]) {
+                    item = parseInt(item);
+                    if (item + 1 > biggest) {
+                        biggest = item + 1;
+                    }
+                }
+            }
+
+            for (let i = 0; i < biggest; i++) {
+                const row = document.createElement("tr");
+                try {
+                    const cell = document.createElement("td");
+                    cell.textContent = this.data[0][i].name;
+                    row.appendChild(cell);
+                } catch (error) {
+                    const cell = document.createElement("td");
+                    row.appendChild(cell);
+                }
+                try {
+                    const cell = document.createElement("td");
+                    cell.textContent = this.data[1][i].name;
+                    row.appendChild(cell);
+                } catch (error) {
+                    const cell = document.createElement("td");
+                    row.appendChild(cell);
+                }
+                try {
+                    const cell = document.createElement("td");
+                    cell.textContent = this.data[2][i].name;
+                    row.appendChild(cell);
+                } catch (error) {
+                    const cell = document.createElement("td");
+                    row.appendChild(cell);
+                }
+                try {
+                    const cell = document.createElement("td");
+                    cell.textContent = this.data[3][i].name;
+                    row.appendChild(cell);
+                } catch (error) {
+                    const cell = document.createElement("td");
+                    row.appendChild(cell);
+                }
+                try {
+                    const cell = document.createElement("td");
+                    cell.textContent = this.data[4][i].name;
+                    row.appendChild(cell);
+                } catch (error) {
+                    const cell = document.createElement("td");
+                    row.appendChild(cell);
+                }
+                tbody.appendChild(row);
+            }
+            return tbody.outerHTML;
+        },
+    },
+    
+    beforeMount(){
+        this.date = new Date();
+        this.day = this.date.getDay();
+        this.newdate = new Date(this.date.setDate(this.date.getDate() - this.day + 1 + ((this.day == 6) ? 7 : 0)));
+        this.selectday = this.day + ((this.day == 6) ? -5 : 0) + ((this.day == 0) ? 1 : 0);
+
+        this.getData();
+    }
+}
 </script>
 
 <template>
-    <table>
-        <thead>
-            <tr>
-                <th>Monday</th>
-                <th>Tuesday</th>
-                <th>Wednesday</th>
-                <th>Thursday</th>
-                <th>Friday</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td><span style="font-size: 18px;">Mathe</span><span style="font-size: 12px;"><br>Arbeitsblatt Nr 2-4</span></td>
-                <td><span style="font-size: 18px;">Deutsch</span><span style="font-size: 12px;"><br>Text lesen</span></td>
-                <td><span style="font-size: 18px;">Science</span><span style="font-size: 12px;"><br>Create Presentation</span></td>
-                <td><span style="font-size: 18px;">Mathe</span><span style="font-size: 12px;"><br>Verbesserung Arbeit</span></td>
-                <td><span style="font-size: 18px;">Science</span><span style="font-size: 12px;"><br>Create Presentation</span></td>
-            </tr>
-            <tr>
-                <td></td>
-                <td><span style="font-size: 18px;">Religion</span><span style="font-size: 12px;"><br>Mit Gott eine Runde Fortnite spielen</span></td>
-                <td><span style="font-size: 18px;">Wirtschaft</span><span style="font-size: 12px;"><br>GG lesen</span></td>
-                <td></td>
-                <td><span style="font-size: 18px;">Informatik Hardware</span><span style="font-size: 12px;"><br>Installieren von VS Code</span></td>
-            </tr>
-            <tr>
-                <td></td>
-                <td></td>
-                <td><span style="font-size: 18px;">Chemie</span><span style="font-size: 12px;"><br>Ei kochen und protokolieren</span></td>
-                <td></td>
-                <td><span style="font-size: 18px;">Physik</span><span style="font-size: 12px;"><br>AB ausfüllen</span></td>
-            </tr>
-        </tbody>
-    </table>
+<table>
+    <thead>
+        <tr>
+            <th>Monday</th>
+            <th>Tuesday</th>
+            <th>Wednesday</th>
+            <th>Thursday</th>
+            <th>Friday</th>
+        </tr>
+    </thead>
+    <tbody v-html="tbody"></tbody>
+</table>
 </template>
 
 <style>

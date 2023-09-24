@@ -50,7 +50,20 @@ db.serialize(() => {
     }
 
     exports.getAllHomework = function getAllHomework(callback){
-        db.all("SELECT * FROM homework WHERE fertig = 0", (err,result) =>{
+        db.all("SELECT * FROM homework WHERE date BETWEEN current_timestamp and '2030-12-29' ORDER BY date", (err,result) =>{
+            console.log(result);
+            if (err) {
+                console.error(err.message);
+                callback(err,null);
+            } else {
+                callback(null,result);
+            }
+        });
+    }
+
+    exports.getUnfinishedHomework = function getUnfinishedHomework(callback){
+        db.all("SELECT * FROM homework WHERE date BETWEEN current_timestamp and '2030-12-29' AND fertig = 0 ORDER BY date", (err,result) =>{
+            console.log(result);
             if (err) {
                 console.error(err.message);
                 callback(err,null);
@@ -80,9 +93,9 @@ db.serialize(() => {
 
         var Date1 = new Date(date);
         Date1 = format('yyyy-MM-dd', Date1);
-        db.get("INSERT INTO homework (fach, name, description, date) VALUES (?, ?, ?)", fach, name, description, Date1, (err, row) => {
+        db.get("INSERT INTO homework (fach, name, description, date) VALUES (?, ?, ?,?)", fach, name, description, Date1, (err, row) => {
             if (err) {
-                console.error(err.message);
+                console.error(err);
                 callback(err,false);
             } else {
                 callback(null,true);
@@ -109,9 +122,21 @@ db.serialize(() => {
         });
     }
     
-    exports.deleteHomework = function deleteHomework(req, callback){
+    exports.checkHomework = function deleteHomework(req, callback){
         const id = req.params.id;
         db.get("UPDATE homework SET fertig = 1 WHERE id = ?", id, (err, row) => {
+            if (err) {
+                console.error(err.message);
+                callback(err,false);
+            } else {
+                callback(null,true);
+            }
+        });
+    }
+
+    exports.deleteHomework = function deleteHomework(req, callback){
+        const id = req.params.id;
+        db.get("DELETE FROM homework WHERE id = ?", id, (err, row) => {
             if (err) {
                 console.error(err.message);
                 callback(err,false);

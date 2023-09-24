@@ -13,4 +13,3 @@
 <template>
     <button class="submit-button" type="submit" v-on:click="logout()">Logout</button>
 </template>
-
