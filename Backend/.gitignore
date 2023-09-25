@@ -1,8 +1,6 @@
 <<<<<<< HEAD
 node_modules
-db
 =======
-db
 node_modules
 .env
 >>>>>>> origin/main
