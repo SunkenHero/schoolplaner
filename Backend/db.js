@@ -49,9 +49,17 @@ db.serialize(() => {
         });
     }
 
-    exports.getAllHomework = function getAllHomework(callback){
-        db.all("SELECT * FROM homework WHERE date BETWEEN current_timestamp and '2030-12-29' ORDER BY date", (err,result) =>{
+    exports.getAllHomework = function getAllHomework(callback) {
+        var date = new Date();
+        day = date.getDay();
+        date.setDate(date.getDate() - day + 1 + ((day == 6) ? 7 : 0));
+
+        var newdate = new Date();
+        newdate.setDate(date.getDate() + 7);
+
+        db.all("SELECT * FROM homework WHERE date BETWEEN '" + date.toISOString().split('T')[0] + "' and '" + newdate.toISOString().split('T')[0] + "' ORDER BY date", (err,result) =>{
             console.log(result);
+            
             if (err) {
                 console.error(err.message);
                 callback(err,null);
@@ -61,9 +69,9 @@ db.serialize(() => {
         });
     }
 
-    exports.getUnfinishedHomework = function getUnfinishedHomework(callback){
+    exports.getUnfinishedHomework = function getUnfinishedHomework(callback) {
         db.all("SELECT * FROM homework WHERE date BETWEEN current_timestamp and '2030-12-29' AND fertig = 0 ORDER BY date", (err,result) =>{
-            console.log(result);
+            
             if (err) {
                 console.error(err.message);
                 callback(err,null);
@@ -73,7 +81,7 @@ db.serialize(() => {
         });
     }
 
-    exports.getHomework = function getHomework(req, callback){
+    exports.getHomework = function getHomework(req, callback) {
         const id = req.params.id;
         db.get("SELECT * FROM homework WHERE id = ?", id,(err,row)=>{
             if (err) {
@@ -85,7 +93,7 @@ db.serialize(() => {
         });
     }
 
-    exports.createHomework = function createHomework(req, callback){
+    exports.createHomework = function createHomework(req, callback) {
         const fach = req.body.fach;
         const name = req.body.name;
         const description = req.body.description;
@@ -103,7 +111,7 @@ db.serialize(() => {
         });
     }
 
-    exports.updateHomework = function updateHomework(req, callback){
+    exports.updateHomework = function updateHomework(req, callback) {
         const fach = req.body.fach;
         const id = req.params.id;
         const name = req.body.name;
@@ -122,7 +130,7 @@ db.serialize(() => {
         });
     }
     
-    exports.checkHomework = function deleteHomework(req, callback){
+    exports.checkHomework = function deleteHomework(req, callback) {
         const id = req.params.id;
         db.get("UPDATE homework SET fertig = 1 WHERE id = ?", id, (err, row) => {
             if (err) {
@@ -134,7 +142,7 @@ db.serialize(() => {
         });
     }
 
-    exports.deleteHomework = function deleteHomework(req, callback){
+    exports.deleteHomework = function deleteHomework(req, callback) {
         const id = req.params.id;
         db.get("DELETE FROM homework WHERE id = ?", id, (err, row) => {
             if (err) {
