@@ -4,8 +4,8 @@ async function main() {
     const untis = new WebUntis('Friedrich-Hecker-Schule', 'tobias.weiss', 'mixyke92', 'niobe.webuntis.com');
     await untis.login();
 
-    class_ = await getAbsentLesson(untis, new Date(2023, 9, 25), new Date(2023, 9, 29));
-    console.log(class_);
+    obj = await getAbsentLesson(untis, new Date(2023, 9, 25), new Date(2023, 9, 29));
+    console.log(obj);
 
     await untis.logout();
 }
