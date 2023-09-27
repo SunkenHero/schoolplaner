@@ -4,7 +4,7 @@ async function main() {
     const untis = new WebUntis('Friedrich-Hecker-Schule', 'tobias.weiss', 'mixyke92', 'niobe.webuntis.com');
     await untis.login();
 
-    obj = await getAbsentLesson(untis, new Date(2023, 9, 25), new Date(2023, 9, 29));
+    obj = await getExamsForRange(untis, new Date(2023, 6, 25), new Date(2023, 9, 29));
     console.log(obj);
 
     await untis.logout();
@@ -40,7 +40,7 @@ async function getClasses(untis) {
 
 async function getStatusData(untis) {
     try {
-        return untis.getStatusData();
+        return await untis.getStatusData();
     } catch (error) {
         return null;
     }
@@ -48,7 +48,7 @@ async function getStatusData(untis) {
 
 async function getAbsentLesson(untis, start, end) {
     try {
-        return untis.getAbsentLesson(start, end);
+        return await untis.getAbsentLesson(start, end);
     } catch (error) {
         return null;
     }
@@ -56,7 +56,7 @@ async function getAbsentLesson(untis, start, end) {
 
 async function getExamsForRange(untis, start, end, classid, withGrades = true) {
     try {
-        return untis.getAbsentLesson(start, end, classid, withGrades);
+        return await untis.getExamsForRange(start, end, classid, withGrades);
     } catch (error) {
         return null;
     }
