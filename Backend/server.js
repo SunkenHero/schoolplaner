@@ -50,6 +50,27 @@ app.get('/api/homework/:id', (req, res) => {
         });
 });
 
+app.get('/api/homework/:year/:month/:day', (req, res) => {
+    db.getHomeworkByDate(req, (err, result)=>{
+        if (err) {
+            res.json({message: "Error"})
+        } else {
+            res.json(result)
+        }
+        });
+});
+
+app.get('/api/homework/:year/:month/:day/unfinished', (req, res) => {
+    db.getHomeworkByDateUnFinisched(req, (err, result)=>{
+        if (err) {
+            res.json({message: "Error"})
+        } else {
+            res.json(result)
+        }
+        });
+});
+
+
 app.post('/api/homework', (req, res) => {
     db.createHomework(req, (err, result)=>{
         if (err) {
@@ -89,6 +110,8 @@ app.delete('/api/homework/:id/', (req, res) => {
         }
     });
 });
+
+
 
 /*app.get('/decode', (req, res) => {
   const token = req.header('Authorization').replace('Bearer ', '');
