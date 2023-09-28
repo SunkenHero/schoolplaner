@@ -3,9 +3,9 @@ const { WebUntis } = require('webuntis');
 async function main() {
     const untis = new WebUntis('Friedrich-Hecker-Schule', 'tobias.weiss', 'mixyke92', 'niobe.webuntis.com');
     await untis.login();
-    
-    obj = await getTimegrid(untis);
-    console.log(obj[1].timeUnits);
+
+    obj = await getTimetableForToday(untis, 704, 1);
+    console.log(obj);
 
     await untis.logout();
 }
@@ -225,6 +225,38 @@ async function getTeachers(untis) {
 async function getTimegrid(untis) {
     try {
         return await untis.getTimegrid();
+    } catch (error) {
+        return null;
+    }
+}
+
+async function getTimetableFor(untis, date, id, type = 1) {
+    try {
+        return await untis.getTimetableFor(date, id, type);
+    } catch (error) {
+        return null;
+    }
+}
+
+async function getTimetableForRange(untis, start, end, id, type = 1) {
+    try {
+        return await untis.getTimetableForRange(start, end, id, type);
+    } catch (error) {
+        return null;
+    }
+}
+
+async function getTimetableForToday(untis, id, type = 1) {
+    try {
+        return await untis.getTimetableForToday(id, type);
+    } catch (error) {
+        return null;
+    }
+}
+
+async function getTimetableForWeek(untis, date, id, type = 1) {
+    try {
+        return await untis.getTimetableForWeek(date, id, type);
     } catch (error) {
         return null;
     }
