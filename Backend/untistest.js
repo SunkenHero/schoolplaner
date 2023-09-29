@@ -3,7 +3,7 @@ const { WebUntis } = require('webuntis');
 const Cache = require('./cache.js');
 
 class UntisApi {
-    constructor(school, username, password, url, cache, fetchinterval) {
+    constructor(school, username, password, url, cache) {
         this.untis = new WebUntis(school, username, password , url);
         this.cache = cache;
         this.previousFetchTime = 0;
@@ -14,10 +14,8 @@ class UntisApi {
         if (fetchTime != this.previousFetchTime) {
             this.previousFetchTime = fetchTime;
             this.cache.flushAll();
-            console.log("Cache flushed");
             return true;
         }
-        console.log("Cache not flushed");
         return false;
     }
 
@@ -40,13 +38,13 @@ class UntisApi {
     async getAbsentLesson(start, end) {
         start.setHours(0, 0, 0, 0);
         end.setHours(0, 0, 0, 0);
-        const cacheKey = `getAbsentLesson/${start.now()}/${end.now()}`;
+        const cacheKey = `getAbsentLesson/${start.getTime()}/${end.getTime()}`;
         const cachedData = this.cache.get(cacheKey);
         if (cachedData) {
             return cachedData;
         }
         try {
-            data = await this.untis.getAbsentLesson(start, end);
+            const data = await this.untis.getAbsentLesson(start, end);
             this.cache.set(cacheKey, data);
             return data;
         } catch (error) {
@@ -56,9 +54,15 @@ class UntisApi {
     }
 
     async getClassByName(name) {
+        const cacheKey = `getClasses`;
+        const cachedData = this.cache.get(cacheKey);
+        if (cachedData) {
+            return cachedData.find(class_ => class_.name == name);
+        }
         try {
-            const classes = await this.untis.getClasses();
-            return classes.find(class_ => class_.name == name);
+            const data = await this.untis.getClasses();
+            this.cache.set(cacheKey, data);
+            return data.find(class_ => class_.name == name);
         } catch (error) {
             console.log(error);
             return null;
@@ -66,9 +70,15 @@ class UntisApi {
     }
 
     async getClassByID(id) {
+        const cacheKey = `getClasses`;
+        const cachedData = this.cache.get(cacheKey);
+        if (cachedData) {
+            return cachedData.find(class_ => class_.id == id);
+        }
         try {
-            const classes = await this.untis.getClasses();
-            return classes.find(class_ => class_.id == id);
+            const data = await this.untis.getClasses();
+            this.cache.set(cacheKey, data);
+            return data.find(class_ => class_.id == id);
         } catch (error) {
             console.log(error);
             return null;
@@ -76,8 +86,15 @@ class UntisApi {
     }
 
     async getClasses() {
+        const cacheKey = `getClasses`;
+        const cachedData = this.cache.get(cacheKey);
+        if (cachedData) {
+            return cachedData;
+        }
         try {
-            return await this.untis.getClasses();
+            const data = await this.untis.getClasses();
+            this.cache.set(cacheKey, data);
+            return data;
         } catch (error) {
             console.log(error);
             return null;
@@ -85,8 +102,15 @@ class UntisApi {
     }
 
     async getDepartments() {
+        const cacheKey = `getDepartments`;
+        const cachedData = this.cache.get(cacheKey);
+        if (cachedData) {
+            return cachedData;
+        }
         try {
-            return await this.untis.getDepartments();
+            const data = await this.untis.getDepartments();
+            this.cache.set(cacheKey, data);
+            return data;
         } catch (error) {
             console.log(error);
             return null;
@@ -94,8 +118,15 @@ class UntisApi {
     }
 
     async getExamsForRange(start, end, classid = -1, withGrades = true) {
+        const cacheKey = `getExamsForRange/${start.getTime()}/${end.getTime()}/${classid}/${withGrades}`;
+        const cachedData = this.cache.get(cacheKey);
+        if (cachedData) {
+            return cachedData;
+        }
         try {
-            return await this.untis.getExamsForRange(start, end, classid, withGrades);
+            const data = await this.untis.getExamsForRange(start, end, classid, withGrades);
+            this.cache.set(cacheKey, data);
+            return data;
         } catch (error) {
             console.log(error);
             return null;
@@ -332,8 +363,6 @@ async function main() {
     untis = new UntisApi('Friedrich-Hecker-Schule', 'tobias.weiss', 'mixyke92', 'niobe.webuntis.com', Cache.mycache, 5);
     await untis.login();
 
-    await untis.fetchdata();
-    await untis.fetchdata();
     await untis.fetchdata();
     
     await untis.logout();
