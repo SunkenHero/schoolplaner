@@ -114,7 +114,7 @@ input {
 }
 
 button:hover {
-  background-color: hsla(160, 70%, 37%, 1);
+    background-color: hsla(160, 70%, 37%, 1);
 }
 
 button:active {

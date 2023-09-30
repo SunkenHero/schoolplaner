@@ -1,4 +1,6 @@
 <script>
+import CreateHomeworkModal from "../components/CreateHomeworkComponent.vue";
+
 export default {
     name: 'HomeView',
     data() {
@@ -7,8 +9,13 @@ export default {
             newdate: "",
             date: "",
             day: 0,
-            selectday: 0
+            selectday: 0,
+            showCreateHomeworkModal: false
         };
+    },
+
+    components: {
+        CreateHomeworkModal
     },
 
     methods:{
@@ -131,6 +138,9 @@ export default {
 </script>
 
 <template>
+
+<button style="createhomework-button" id="show-createhomework-modal" @click="showCreateHomeworkModal = true">Create Homework</button>
+
 <table>
     <thead>
         <tr>
@@ -143,6 +153,14 @@ export default {
     </thead>
     <tbody v-html="tbody"></tbody>
 </table>
+
+<Teleport to="body">
+  <CreateHomeworkModal :show="showCreateHomeworkModal" @close="showCreateHomeworkModal = false">
+    <template #header>
+    </template>
+  </CreateHomeworkModal>
+</Teleport>
+
 </template>
 
 <style>
@@ -224,6 +242,19 @@ tbody .cell-subtitle {
 
 tbody .subtitle-div {
     margin-left: 8px;
+}
+
+.createhomework-button {
+    width: 200px;
+    height: 40px;
+    font-size: 20px;
+    padding-bottom: 3px;
+    background-color: var(--color-green);
+    border: 0px;
+    border-radius: 20px;
+    margin-bottom: 13px;
+    transition: background-color 0.25s;
+    cursor: pointer;
 }
 
 </style>

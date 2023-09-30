@@ -1,11 +1,9 @@
 const { WebUntis } = require('webuntis');
 
-const Cache = require('./cache.js');
-
 class UntisApi {
-    constructor(school, username, password, url, cache) {
+    constructor(school, username, password, url, cacheTimeout) {
         this.untis = new WebUntis(school, username, password , url);
-        this.cache = cache;
+        this.cache = new NodeCache({checkperiod: cacheTimeout});
         this.previousFetchTime = 0;
     }
 
@@ -134,8 +132,15 @@ class UntisApi {
     }
 
     async getHolidays() {
+        const cacheKey = `getHolidays`;
+        const cachedData = this.cache.get(cacheKey);
+        if (cachedData) {
+            return cachedData;
+        }
         try {
-            return await this.untis.getHolidays();
+            data = await this.untis.getHolidays();
+            this.cache.set(cacheKey, data);
+            return data;
         } catch (error) {
             console.log(error);
             return null;
@@ -143,8 +148,17 @@ class UntisApi {
     }
 
     async getHomeWorkAndLessons(start, end) {
+        start.setHours(0, 0, 0, 0);
+        end.setHours(0, 0, 0, 0);
+        const cacheKey = `getHomeWorkAndLessons/${start.getTime()}/${end.getTime()}`;
+        const cachedData = this.cache.get(cacheKey);
+        if (cachedData) {
+            return cachedData;
+        }
         try {
-            return await this.untis.getHomeWorkAndLessons(start, end);
+            data = await this.untis.getHomeWorkAndLessons(start, end);
+            this.cache.set(cacheKey, data);
+            return data;
         } catch (error) {
             console.log(error);
             return null;
@@ -152,8 +166,17 @@ class UntisApi {
     }
 
     async getHomeWorksFor(start, end) {
+        start.setHours(0, 0, 0, 0);
+        end.setHours(0, 0, 0, 0);
+        const cacheKey = `getHomeWorksFor/${start.getTime()}/${end.getTime()}`;
+        const cachedData = this.cache.get(cacheKey);
+        if (cachedData) {
+            return cachedData;
+        }
         try {
-            return await this.untis.getHomeWorksFor(start, end);
+            data = await this.untis.getHomeWorksFor(start, end);
+            this.cache.set(cacheKey, data);
+            return data;
         } catch (error) {
             console.log(error);
             return null;
@@ -161,8 +184,15 @@ class UntisApi {
     }
 
     async getInbox() {
+        const cacheKey = `getInbox`;
+        const cachedData = this.cache.get(cacheKey);
+        if (cachedData) {
+            return cachedData;
+        }
         try {
-            return await this.untis.getInbox();
+            data = await this.untis.getInbox();
+            this.cache.set(cacheKey, data);
+            return data;
         } catch (error) {
             console.log(error);
             return null;
@@ -179,8 +209,15 @@ class UntisApi {
     }
 
     async getLatestSchoolyear() {
+        const cacheKey = `getLatestSchoolyear`;
+        const cachedData = this.cache.get(cacheKey);
+        if (cachedData) {
+            return cachedData;
+        }
         try {
-            return await this.untis.getLatestSchoolyear();
+            data = await this.untis.getLatestSchoolyear();
+            this.cache.set(cacheKey, data);
+            return data;
         } catch (error) {
             console.log(error);
             return null;
@@ -188,8 +225,16 @@ class UntisApi {
     }
 
     async getNewsWidget(date) {
+        date.setHours(0, 0, 0, 0);
+        const cacheKey = `getNewsWidget/${date.getTime()}`;
+        const cachedData = this.cache.get(cacheKey);
+        if (cachedData) {
+            return cachedData;
+        }
         try {
-            return await this.untis.getNewsWidget(date);
+            data = await this.untis.getNewsWidget(date);
+            this.cache.set(cacheKey, data);
+            return data;
         } catch (error) {
             console.log(error);
             return null;
@@ -197,8 +242,16 @@ class UntisApi {
     }
 
     async getOwnClassTimetableFor(date) {
+        date.setHours(0, 0, 0, 0);
+        const cacheKey = `getOwnClassTimetableFor/${date.getTime()}`;
+        const cachedData = this.cache.get(cacheKey);
+        if (cachedData) {
+            return cachedData;
+        }
         try {
-            return await this.untis.getOwnClassTimetableFor(date);
+            data = await this.untis.getOwnClassTimetableFor(date);
+            this.cache.set(cacheKey, data);
+            return data;
         } catch (error) {
             console.log(error);
             return null;
@@ -206,8 +259,17 @@ class UntisApi {
     }
 
     async getOwnClassTimetableForRange(start, end) {
+        start.setHours(0, 0, 0, 0);
+        end.setHours(0, 0, 0, 0);
+        const cacheKey = `getOwnClassTimetableForRange/${start.getTime()}/${end.getTime()}`;
+        const cachedData = this.cache.get(cacheKey);
+        if (cachedData) {
+            return cachedData;
+        }
         try {
-            return await this.untis.getOwnClassTimetableForRange(start, end);
+            data = await this.untis.getOwnClassTimetableForRange(start, end);
+            this.cache.set(cacheKey, data);
+            return data;
         } catch (error) {
             console.log(error);
             return null;
@@ -215,8 +277,17 @@ class UntisApi {
     }
 
     async getOwnClassTimetableForToday() {
+        date = new Date();
+        date.setHours(0, 0, 0, 0);
+        const cacheKey = `getOwnClassTimetableForToday/${date.getTime()}`;
+        const cachedData = this.cache.get(cacheKey);
+        if (cachedData) {
+            return cachedData;
+        }
         try {
-            return await this.untis.getOwnClassTimetableForToday();
+            data = await this.untis.getOwnClassTimetableForToday();
+            this.cache.set(cacheKey, data);
+            return data;
         } catch (error) {
             console.log(error);
             return null;
@@ -224,6 +295,7 @@ class UntisApi {
     }
 
     async getOwnTimetableFor(date) {
+        date.setHours(0, 0, 0, 0);
         try {
             return await this.untis.getOwnTimetableFor(date);
         } catch (error) {
@@ -233,6 +305,8 @@ class UntisApi {
     }
 
     async getOwnTimetableForRange(start, end) {
+        start.setHours(0, 0, 0, 0);
+        end.setHours(0, 0, 0, 0);
         try {
             return await this.untis.getOwnTimetableForRange(start, end);
         } catch (error) {
@@ -251,6 +325,7 @@ class UntisApi {
     }
 
     async getOwnTimetableForWeek(date) {
+        date.setHours(0, 0, 0, 0);
         try {
             return await this.untis.getOwnTimetableForWeek(date);
         } catch (error) {
@@ -323,6 +398,7 @@ class UntisApi {
     }
 
     async getTimetableFor(date, id, type = 1) {
+        date.setHours(0, 0, 0, 0);
         try {
             return await this.untis.getTimetableFor(date, id, type);
         } catch (error) {
@@ -332,6 +408,8 @@ class UntisApi {
     }
 
     async getTimetableForRange(start, end, id, type = 1) {
+        start.setHours(0, 0, 0, 0);
+        end.setHours(0, 0, 0, 0);
         try {
             return await this.untis.getTimetableForRange(start, end, id, type);
         } catch (error) {
@@ -350,6 +428,7 @@ class UntisApi {
     }
 
     async getTimetableForWeek(date, id, type = 1) {
+        date.setHours(0, 0, 0, 0);
         try {
             return await this.untis.getTimetableForWeek(date, id, type);
         } catch (error) {
@@ -360,7 +439,7 @@ class UntisApi {
 }
 
 async function main() {
-    untis = new UntisApi('Friedrich-Hecker-Schule', 'tobias.weiss', 'mixyke92', 'niobe.webuntis.com', Cache.mycache, 5);
+    untis = new UntisApi('Friedrich-Hecker-Schule', 'tobias.weiss', 'mixyke92', 'niobe.webuntis.com', 900);
     await untis.login();
 
     await untis.fetchdata();
