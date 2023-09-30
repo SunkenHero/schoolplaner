@@ -1,4 +1,5 @@
 const { WebUntis } = require('webuntis');
+const NodeCache = require( "node-cache" );
 
 class UntisApi {
     constructor(school, username, password, url, cacheTimeout) {
@@ -116,6 +117,8 @@ class UntisApi {
     }
 
     async getExamsForRange(start, end, classid = -1, withGrades = true) {
+        start.setHours(0, 0, 0, 0);
+        end.setHours(0, 0, 0, 0);
         const cacheKey = `getExamsForRange/${start.getTime()}/${end.getTime()}/${classid}/${withGrades}`;
         const cachedData = this.cache.get(cacheKey);
         if (cachedData) {
@@ -552,7 +555,13 @@ async function main() {
     await untis.login();
 
     await untis.fetchdata();
-    
+    //console.log(await untis.getAbsentLesson(new Date(), new Date(2023, 10, 5)));
+    console.log(await untis.getInbox());
+    console.log("==============================================");
+    console.log(await untis.getInbox());
+    console.log("==============================================");
+    console.log(untis.Cache.keys());
+
     await untis.logout();
 }
 
