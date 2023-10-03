@@ -1,4 +1,6 @@
 <script>
+import router from '../router'
+
 export default {
   props: {
     show: Boolean
@@ -6,7 +8,7 @@ export default {
 
   data() {
     return {
-        subjects: ["Deutsch", "Mathe", "Englisch", "Französisch", "Physik", "Chemie", "Biologie", "Geschichte", "Erdkunde", "Politik", "Wirtschaft", "Religion", "Sport", "Kunst", "Musik", "Informatik", "Gesundheit", "Ethik", "Philosophie", "Psychologie", "Sozialwissenschaften", "Pädagogik", "Darstellendes Spiel", "Medienkunde", "Wirtschaftsinformatik", "Wirtschaftslehre", "Technik", "Naturwissenschaften", "Gesellschaftswissenschaften", "Sprachen", "Sonstiges"].sort(),
+        subjects: ["Deutsch", "Mathe", "Englisch", "Französisch", "Physik", "Chemie", "Biologie", "G-GK", "Erdkunde", "Wirtschaft", "RRK","REV", "Sport", "Kunst", "Musik", "Informatik", "Ethik","Sonstiges"].sort(),
         name: "",
         description: "",
         date: "",
@@ -15,13 +17,26 @@ export default {
   },
   methods: {
     close() {
-      this.$emit('update:show', false)
+        this.$emit('update')
+        this.$emit('close')
     },
     createhomework(){
         const requestOptions = {
             method: "POST",
-            headers: { "Content-Type": "application/json" },
-        }
+            headers: { "Content-Type": "application/json",
+                        "Authorization": "Bearer " + localStorage.getItem('token') },
+            body: JSON.stringify({ name: this.name, description: this.description, date: this.date, fach: this.fach })
+        };
+        
+        fetch("http://10.8.0.4:3000/api/homework", requestOptions)
+            .then(response => response.json())
+            .then(data => {
+                console.log(data)
+            });
+        this.close()
+
+
+        //todo reload tbody
     }
   },
 }
@@ -34,6 +49,7 @@ export default {
         <div class="modal-header">
           <slot name="header">Create Homework</slot>
         </div>
+        <div>{{ date }}</div>
         <div class="modal-body">
                 <input placeholder="Name" v-model="name" required/>
                 <br />

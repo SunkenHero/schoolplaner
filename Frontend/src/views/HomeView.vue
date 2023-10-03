@@ -163,7 +163,7 @@ export default {
 </table>
 
 <Teleport to="body">
-  <CreateHomeworkModal :show="showCreateHomeworkModal" @close="showCreateHomeworkModal = false">
+  <CreateHomeworkModal :show="showCreateHomeworkModal" @close="showCreateHomeworkModal = false" @update="getData(0)">
     <template #header>
     </template>
   </CreateHomeworkModal>
