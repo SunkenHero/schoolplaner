@@ -61,7 +61,7 @@ app.get('/api/homework/:year/:month/:day', (req, res) => {
 });
 
 app.get('/api/homework/:year/:month/:day/unfinished', (req, res) => {
-    db.getHomeworkByDateUnFinisched(req, (err, result)=>{
+    db.getHomeworkByDateUnFinished(req, (err, result)=>{
         if (err) {
             res.json({message: "Error"})
         } else {

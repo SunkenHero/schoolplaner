@@ -29,24 +29,23 @@ export default {
                  * /2023/09/25
                  * /user --> jwt token
                  * **/
-            fetch("http://10.8.0.4:3000/api/homework/", requestOptions)
+            fetch("http://10.8.0.4:3000/api/homework/2023/10/02", requestOptions)
                 .then(response => response.json())
                 .then(data => {
-                    const date = this.date;
+                    const date = this.newdate;
                     date.setHours(0, 0, 0, 0);
                     date.setDate(date.getDate() - 2);
+                    console.log(data);
                     for (const item of data) {
                         const parsedDate = new Date(item.date);
                         parsedDate.setHours(0, 0, 0, 0);
-                        if (date.getFullYear() == parsedDate.getFullYear() && date.getMonth() == parsedDate.getMonth()) {
-                            const diff = parsedDate.getTime() - date.getTime();
-                            if (diff >= 0 && diff <= 518400000) {
-                                var day = parsedDate.getDay() - 1;
-                                if (day == -1 || day > 4){
-                                    day = 1;
-                                }
-                                this.data[day].push(item);
+                        const diff = parsedDate.getTime() - date.getTime();
+                        if (diff >= 0 && diff <= 518400000) {
+                            var day = parsedDate.getDay() - 1;
+                            if (day == -1 || day > 4){
+                                day = 1;
                             }
+                            this.data[day].push(item);
                         }
                     }
                 }

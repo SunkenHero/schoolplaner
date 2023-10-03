@@ -98,10 +98,10 @@ db.serialize(() => {
         const month = req.params.month;
         const day = req.params.day;
 
-        newdate = new Date(year,month,day);
+        const newdate = new Date(year + "-" + month + "-" + day);
         newdate.setDate(newdate.getDate() + 7);
 
-        db.all("SELECT * FROM homework WHERE date BETWEEN '" + year + "-" + month + "-" + day + "' and '" + newdate.year + "-" + newdate.month + "-" + newdate.day + "' ORDER BY date", (err,result) =>{
+        db.all("SELECT * FROM homework WHERE date BETWEEN '" + year + "-" + month + "-" + day + "' and '" + newdate.toISOString().split("T")[0] + "' ORDER BY date", (err,result) =>{
             if (err) {
                 console.error(err.message);
                 callback(err,null);
@@ -112,15 +112,15 @@ db.serialize(() => {
         );
     }
 
-    exports.getHomeworkByDateUnFinisched = function getHomeworkByDateFinisched(req, callback) {
+    exports.getHomeworkByDateUnFinished = function getHomeworkByDateUnFinished(req, callback) {
         const year = req.params.year;
         const month = req.params.month;
         const day = req.params.day;
 
-        newdate = new Date(year,month,day);
+        const newdate = new Date(year + "-" + month + "-" + day);
         newdate.setDate(newdate.getDate() + 7);
 
-        db.all("SELECT * FROM homework WHERE date BETWEEN '" + year + "-" + month + "-" + day + "' and '" + newdate.year + "-" + newdate.month + "-" + newdate.day + "' AND fertig = 0 ORDER BY date", (err,result) =>{
+        db.all("SELECT * FROM homework WHERE date BETWEEN '" + year + "-" + month + "-" + day + "' and '" + newdate.toISOString().split("T")[0] + "' AND fertig = 0 ORDER BY date", (err,result) =>{
             if (err) {
                 console.error(err.message);
                 callback(err,null);
