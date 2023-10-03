@@ -7,6 +7,7 @@ require('dotenv').config();
 const secretKey = process.env.KEY;
 
 exports.Auth = function(req, res){
+    req.body.name = req.body.name.toLowerCase();
     db.auth( req.body.name, req.body.passwort, (authenticated, result) => {
         console.log(req.body.name, req.body.passwort)
         if (authenticated) {

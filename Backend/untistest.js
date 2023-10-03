@@ -280,7 +280,7 @@ class UntisApi {
     }
 
     async getOwnClassTimetableForToday() {
-        date = new Date();
+        const date = new Date();
         date.setHours(0, 0, 0, 0);
         const cacheKey = `getOwnClassTimetableForToday/${date.getTime()}`;
         const cachedData = this.cache.get(cacheKey);
@@ -333,7 +333,7 @@ class UntisApi {
     }
 
     async getOwnTimetableForToday() {
-        date = new Date();
+        const date = new Date();
         date.setHours(0, 0, 0, 0);
         const cacheKey = `getOwnTimetableForToday/${date.getTime()}`;
         const cachedData = this.cache.get(cacheKey);
@@ -515,7 +515,7 @@ class UntisApi {
     }
 
     async getTimetableForToday(id, type = 1) {
-        date = new Date();
+        const date = new Date();
         date.setHours(0, 0, 0, 0);
         const cacheKey = `getTimetableForToday/${date.getTime()}/${id}/${type}`;
         const cachedData = this.cache.get(cacheKey);
@@ -555,12 +555,6 @@ async function main() {
     await untis.login();
 
     await untis.fetchdata();
-    //console.log(await untis.getAbsentLesson(new Date(), new Date(2023, 10, 5)));
-    console.log(await untis.getInbox());
-    console.log("==============================================");
-    console.log(await untis.getInbox());
-    console.log("==============================================");
-    console.log(untis.Cache.keys());
 
     await untis.logout();
 }

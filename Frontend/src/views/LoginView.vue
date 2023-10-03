@@ -12,7 +12,6 @@
     components: { Text },
     methods: {
         login() {
-            console.log(this.name + " " + this.passwort);
             const requestOptions = {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },

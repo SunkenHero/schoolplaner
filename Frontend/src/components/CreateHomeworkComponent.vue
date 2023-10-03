@@ -2,7 +2,28 @@
 export default {
   props: {
     show: Boolean
-  }
+  },
+
+  data() {
+    return {
+        subjects: ["Deutsch", "Mathe", "Englisch", "Französisch", "Physik", "Chemie", "Biologie", "Geschichte", "Erdkunde", "Politik", "Wirtschaft", "Religion", "Sport", "Kunst", "Musik", "Informatik", "Gesundheit", "Ethik", "Philosophie", "Psychologie", "Sozialwissenschaften", "Pädagogik", "Darstellendes Spiel", "Medienkunde", "Wirtschaftsinformatik", "Wirtschaftslehre", "Technik", "Naturwissenschaften", "Gesellschaftswissenschaften", "Sprachen", "Sonstiges"].sort(),
+        name: "",
+        description: "",
+        date: "",
+        fach: "",    
+    }
+  },
+  methods: {
+    close() {
+      this.$emit('update:show', false)
+    },
+    createhomework(){
+        const requestOptions = {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+        }
+    }
+  },
 }
 </script>
 
@@ -11,11 +32,19 @@ export default {
     <div v-if="show" class="modal-mask">
       <div class="modal-container">
         <div class="modal-header">
-          <slot name="header">default header</slot>
+          <slot name="header">Create Homework</slot>
         </div>
-
         <div class="modal-body">
-          <slot name="body">default body</slot>
+                <input placeholder="Name" v-model="name" required/>
+                <br />
+                <input placeholder="Description" v-model="description" required/>
+                <br />
+                <select v-model="fach" required>
+                    <option value="">--Please choose an option--</option>
+                    <option v-for="subject in subjects" :key="subject" :value="subject">{{ subject }}</option>
+                </select>
+                <br />
+                <input placeholder="Datum" type="date" v-model="date" required/>
         </div>
 
         <div class="modal-footer">
@@ -23,8 +52,12 @@ export default {
             default footer
             <button
               class="modal-default-button"
-              @click="$emit('close')"
-            >OK</button>
+              @click="createhomework"
+            >Create</button>
+            <button
+              class="modal-default-button"
+              @click="close"
+            >Cancel</button>
           </slot>
         </div>
       </div>
@@ -46,7 +79,7 @@ export default {
 }
 
 .modal-container {
-  width: 300px;
+  width: auto;
   margin: auto;
   padding: 20px 30px;
   background-color: var(--vt-c-black);
@@ -55,9 +88,9 @@ export default {
   transition: all 0.3s ease;
 }
 
-.modal-header h3 {
-  margin-top: 0;
+.modal-header{
   color: var(--table-accent);
+  font-size: 30px;
 }
 
 .modal-body {
@@ -65,13 +98,13 @@ export default {
 }
 
 .modal-default-button {
-    cursor: pointer;
-    border: 0px solid;
-    background-color: transparent;
-    color: var(--color-green);
-    border-radius: 2px;
-    font-size: medium;
-    float: right;
+  cursor: pointer;
+  border: 0px solid;
+  background-color: transparent;
+  color: var(--color-green);
+  border-radius: 2px;
+  font-size: medium;
+  float: right;
 }
 
 .modal-enter-from {
@@ -87,4 +120,21 @@ export default {
   -webkit-transform: scale(1.1);
   transform: scale(1.1);
 }
+
+input {
+    margin-bottom: 15px;
+    font-size: 15px;
+}
+
+select {
+    margin-bottom: 15px;
+    width: 250px;
+    height: 40px;
+    font-size: 15px;
+    border: 1px solid var(--color-border);
+    border-radius: 10px;
+    background-color: var(--color-background);
+    color: var(--color-text);
+}
+
 </style>

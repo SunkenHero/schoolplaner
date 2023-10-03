@@ -10,7 +10,8 @@ export default {
             date: "",
             day: 0,
             selectday: 0,
-            showCreateHomeworkModal: false
+            showCreateHomeworkModal: false,
+            pageSelect: 0
         };
     },
 
@@ -19,23 +20,25 @@ export default {
     },
 
     methods:{
-        getData() {
+        getData(weekoffset = 0) {
             const requestOptions = {
                 method: "GET",
-                headers: { "Content-Type": "application/json",
-                            "Authorization": "Bearer " + localStorage.getItem('token')},
+                headers: { "Content-Type": "application/json", "Authorization": "Bearer " + localStorage.getItem('token')},
             };
-                /**
-                 * /2023/09/25
-                 * /user --> jwt token
-                 * **/
-            fetch("http://10.8.0.4:3000/api/homework/2023/10/02", requestOptions)
+
+            const date = this.newdate;
+            date.setHours(0, 0, 0, 0);
+
+            date.setDate(date.getDate() + weekoffset * 7);
+
+            this.data = [[], [], [], [], []];
+
+            const datestr = date.toISOString().split('T')[0].split('-');
+            fetch(`http://10.8.0.4:3000/api/homework/${datestr[0]}/${datestr[1]}/${datestr[2]}`, requestOptions)
                 .then(response => response.json())
                 .then(data => {
-                    const date = this.newdate;
                     date.setHours(0, 0, 0, 0);
                     date.setDate(date.getDate() - 2);
-                    console.log(data);
                     for (const item of data) {
                         const parsedDate = new Date(item.date);
                         parsedDate.setHours(0, 0, 0, 0);
@@ -65,7 +68,7 @@ export default {
                     console.log(data);
                 }
             );
-        }
+        },
     },
 
     computed: {
@@ -122,23 +125,29 @@ export default {
                 tbody.appendChild(row);
             }
             return tbody.outerHTML;
-        },
+        }
     },
     
     beforeMount(){
         this.date = new Date();
+        this.date.setHours(0, 0, 0, 0);
         this.day = this.date.getDay();
         this.newdate = new Date(this.date.setDate(this.date.getDate() - this.day + 1 + ((this.day == 6) ? 7 : 0)));
         this.selectday = this.day + ((this.day == 6) ? -5 : 0) + ((this.day == 0) ? 1 : 0);
 
-        this.getData();
+        this.getData(0);
     }
 }
+
 </script>
 
 <template>
 
-<button style="createhomework-button" id="show-createhomework-modal" @click="showCreateHomeworkModal = true">Create Homework</button>
+<div class="button-layout">
+    <button class="pageselect" id="pageselect" @click="pageSelect--;">&lt</button>
+    <button class="createhomework" id="show-createhomework-modal" @click="showCreateHomeworkModal = true">Create Homework</button>
+    <button class="pageselect" id="pageselect" @click="pageSelect++;">></button>
+</div>
 
 <table>
     <thead>
@@ -181,7 +190,7 @@ th {
     background-color: var(--table-accent);
     color: var(--table-white-text);
     font-weight: 600;
-    font-size: 23px;
+    font-size: 25px;
     border-bottom: 0px solid var(--table-spacer);
     padding: 0px 10px;
 }
@@ -243,17 +252,50 @@ tbody .subtitle-div {
     margin-left: 8px;
 }
 
-.createhomework-button {
+.button-layout {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: left;
+}
+
+.button-layout .createhomework {
     width: 200px;
     height: 40px;
     font-size: 20px;
     padding-bottom: 3px;
-    background-color: var(--color-green);
+    background-color: var(--table-accent);
     border: 0px;
     border-radius: 20px;
     margin-bottom: 13px;
     transition: background-color 0.25s;
     cursor: pointer;
+    color: var(--table-white-text);
+    font-weight: 600;
+    margin: 0px 10px;
+}
+
+.button-layout .pageselect {
+    width: 40px;
+    height: 40px;
+    font-size: 20px;
+    padding-bottom: 3px;
+    background-color: var(--table-accent);
+    border: 0px;
+    border-radius: 5px;
+    margin-bottom: 13px;
+    transition: background-color 0.25s;
+    cursor: pointer;
+    padding-bottom: 4px;
+    color: var(--table-white-text);
+}
+
+.button-layout button:hover {
+    background-color: hsla(160, 70%, 37%, 1);
+}
+
+.button-layout button:active {
+    background-color: hsla(160, 45%, 37%, 1);
 }
 
 </style>
