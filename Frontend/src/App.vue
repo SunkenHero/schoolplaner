@@ -1,5 +1,43 @@
-<script setup>
+<script >
 import { RouterLink, RouterView } from 'vue-router'
+
+export default {
+    name: 'App',
+    components: {
+        RouterLink,
+        RouterView
+    },
+    data() {
+        return {
+        checks: false,
+        timer: null
+        }
+    },
+
+    methods: {
+        check() {
+            if(localStorage.getItem('token') != null){
+                this.checks = true;
+            }else{
+                this.checks = false;
+            }
+        }
+    },
+
+    mounted: function () {
+        this.timer = setInterval(() => {
+            this.check()
+            console.log(this.checks)
+        }, 500)
+    },
+
+
+    beforeDestroy() {
+        clearInterval(this.timer)
+    }
+
+
+}
 </script>
 
 <template>
@@ -11,8 +49,8 @@ import { RouterLink, RouterView } from 'vue-router'
         <RouterLink to="/about">About</RouterLink>
       </div>
       <div class="profile">
-            <RouterLink to="/logout">Logout</RouterLink>
-            <RouterLink to="/login">Login</RouterLink>
+            <RouterLink to="/logout" v-if="checks">Logout</RouterLink>
+            <RouterLink to="/login" v-else>Login</RouterLink>
       </div>
     </nav>
   </div>

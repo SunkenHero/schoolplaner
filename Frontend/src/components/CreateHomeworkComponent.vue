@@ -17,7 +17,7 @@ export default {
   },
   methods: {
     close() {
-        this.$emit('update')
+        //this.$emit('update')
         this.$emit('close')
     },
     createhomework(){
