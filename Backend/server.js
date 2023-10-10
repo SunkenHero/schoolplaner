@@ -20,7 +20,7 @@ app.get('/api', (req, res) => {
 
 app.use('/api/*', auth.isAuth);
 
-app.get('/api/homework', (req, res) => {
+app.get('/api/homework', async (req, res) => {
     db.getAllHomework((err, result)=>{
         if(err) {
             res.json({message: "Error"})
@@ -30,7 +30,7 @@ app.get('/api/homework', (req, res) => {
     })
 });
 
-app.get('/api/homework/unfinished', (req, res) => {
+app.get('/api/homework/unfinished', async (req, res) => {
     db.getUnfinishedHomework((err, result)=>{
         if(err) {
             res.json({message: "Error"})
@@ -40,7 +40,7 @@ app.get('/api/homework/unfinished', (req, res) => {
     })
 });
 
-app.get('/api/homework/:id', (req, res) => {
+app.get('/api/homework/:id', async (req, res) => {
     db.getHomework(req, (err, result)=>{
         if (err) {
             res.json({message: "Error"})
@@ -50,7 +50,7 @@ app.get('/api/homework/:id', (req, res) => {
         });
 });
 
-app.get('/api/homework/:year/:month/:day', (req, res) => {
+app.get('/api/homework/:year/:month/:day', async (req, res) => {
     db.getHomeworkByDate(req, (err, result)=>{
         if (err) {
             res.json({message: "Error"})
@@ -60,7 +60,7 @@ app.get('/api/homework/:year/:month/:day', (req, res) => {
         });
 });
 
-app.get('/api/homework/:year/:month/:day/unfinished', (req, res) => {
+app.get('/api/homework/:year/:month/:day/unfinished', async (req, res) => {
     db.getHomeworkByDateUnFinished(req, (err, result)=>{
         if (err) {
             res.json({message: "Error"})
@@ -71,7 +71,7 @@ app.get('/api/homework/:year/:month/:day/unfinished', (req, res) => {
 });
 
 
-app.post('/api/homework', (req, res) => {
+app.post('/api/homework', async (req, res) => {
     db.createHomework(req, (err, result)=>{
         if (err) {
             res.json({message: "Error"})
@@ -81,7 +81,7 @@ app.post('/api/homework', (req, res) => {
     });
 });
 
-app.put('/api/homework/:id/', (req, res) => {
+app.put('/api/homework/:id/', async (req, res) => {
     db.updateHomework(req, (err, result)=>{
         if (err) {
             res.json({message: "Error"})
@@ -91,7 +91,7 @@ app.put('/api/homework/:id/', (req, res) => {
     });
 });
 
-app.patch('/api/homework/:id/', (req, res) => {
+app.patch('/api/homework/:id/', async (req, res) => {
     db.checkHomework(req, (err, result)=>{
         if (err) {
             res.json({message: "Error"})
@@ -101,7 +101,7 @@ app.patch('/api/homework/:id/', (req, res) => {
     });
 });
 
-app.delete('/api/homework/:id/', (req, res) => {
+app.delete('/api/homework/:id/', async (req, res) => {
     db.deleteHomework(req, (err, result)=>{
         if (err) {
             res.json({message: "Error"})

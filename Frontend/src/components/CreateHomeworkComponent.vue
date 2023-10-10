@@ -8,7 +8,7 @@ export default {
 
   data() {
     return {
-        subjects: ["Deutsch", "Mathe", "Englisch", "Französisch", "Physik", "Chemie", "Biologie", "G-GK", "Erdkunde", "Wirtschaft", "RRK","REV", "Sport", "Kunst", "Musik", "Informatik", "Ethik","Sonstiges"].sort(),
+        subjects: ["Deutsch", "Mathe", "Englisch", "Französisch", "Physik", "Chemie", "Biologie", "G-GK", "Erdkunde", "Wirtschaft", "RRK","REV", "Sport", "Kunst", "Musik", "Informatik", "Ethik"].sort(),
         name: "",
         description: "",
         date: "",
@@ -21,6 +21,10 @@ export default {
         this.$emit('close')
     },
     createhomework(){
+        if(this.name == "" || this.description == "" || this.date == "" || this.fach == ""){
+            alert("You must fill out every field!");
+            return
+        }
         const requestOptions = {
             method: "POST",
             headers: { "Content-Type": "application/json",
@@ -58,23 +62,21 @@ export default {
                 <select v-model="fach" required>
                     <option value="">--Please choose an option--</option>
                     <option v-for="subject in subjects" :key="subject" :value="subject">{{ subject }}</option>
+                    <option value="other">Sonstiges</option>
                 </select>
                 <br />
                 <input placeholder="Datum" type="date" v-model="date" required/>
         </div>
 
         <div class="modal-footer">
-          <slot name="footer">
-            default footer
             <button
-              class="modal-default-button"
-              @click="createhomework"
-            >Create</button>
-            <button
-              class="modal-default-button"
+              class="modal-default-button-cancel"
               @click="close"
             >Cancel</button>
-          </slot>
+            <button
+              class="modal-default-button-create"
+              @click="createhomework"
+            >Create</button>
         </div>
       </div>
     </div>
@@ -99,7 +101,7 @@ export default {
   margin: auto;
   padding: 20px 30px;
   background-color: var(--vt-c-black);
-  border-radius: 2px;
+  border-radius: 10px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.33);
   transition: all 0.3s ease;
 }
@@ -113,14 +115,37 @@ export default {
   margin: 20px 0;
 }
 
-.modal-default-button {
+.modal-default-button-cancel {
+  width: 100px;
+  height: 35px;
+  font-size: 18px;
   cursor: pointer;
-  border: 0px solid;
+  border: 2px solid var(--color-border);
   background-color: transparent;
-  color: var(--color-green);
-  border-radius: 2px;
-  font-size: medium;
+  color: var(--color-text);
+  border-radius: 20px;
+  float: left;
+  transition: 0.25s;
+}
+
+.modal-default-button-cancel:hover {
+  background-color: var(--color-green);
+  border-color: var(--color-green);
+  color: rgb(255, 255, 255);
+}
+
+.modal-default-button-create {
+  width: 100px;
+  height: 35px;
+  font-size: 18px;
+  font-weight: 600;
+  cursor: pointer;
+  border: 0px;
+  background-color: var(--color-green);
+  color: rgb(255, 255, 255);
+  border-radius: 20px;
   float: right;
+  transition: 0.25s;
 }
 
 .modal-enter-from {

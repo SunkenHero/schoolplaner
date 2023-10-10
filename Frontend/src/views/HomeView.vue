@@ -19,6 +19,14 @@ export default {
         CreateHomeworkModal
     },
 
+    created() {
+        window.addEventListener('keydown', (e) => {
+        if (e.key == 'Escape') {
+            this.showCreateHomeworkModal = false;
+        }
+        });
+    },
+
     methods:{
         getData(weekoffset = 0) {
             const requestOptions = {
@@ -99,11 +107,13 @@ export default {
                         if (name == null) {
                             title.textContent = "No name set";
                             title.style.fontStyle = "italic";
+                            
                         } else {
                             title.textContent = name;
                         }
                         cell.appendChild(title);
                         cell.appendChild(lineBreak);
+                        
                         const description = this.data[j][i].description;
                         if (description == null) {
                             subtitle.textContent = "No description set";
@@ -111,8 +121,10 @@ export default {
                         } else {
                             subtitle.textContent = description;
                         }
+
                         div.appendChild(subtitle);
                         div.classList.add("subtitle-div");
+            
                         cell.appendChild(div);
                     } catch (error) {
                         
@@ -268,7 +280,7 @@ tbody .subtitle-div {
     border: 0px;
     border-radius: 20px;
     margin-bottom: 13px;
-    transition: background-color 0.25s;
+    transition: 0.25s;
     cursor: pointer;
     color: var(--table-white-text);
     font-weight: 600;
@@ -284,7 +296,7 @@ tbody .subtitle-div {
     border: 0px;
     border-radius: 5px;
     margin-bottom: 13px;
-    transition: background-color 0.25s;
+    transition: 0.25s;
     cursor: pointer;
     padding-bottom: 4px;
     color: var(--table-white-text);
