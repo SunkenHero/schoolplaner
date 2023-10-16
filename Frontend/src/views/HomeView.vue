@@ -278,7 +278,7 @@ tbody .subtitle-div {
     padding-bottom: 3px;
     background-color: var(--table-accent);
     border: 0px;
-    border-radius: 20px;
+    border-radius: 5px;
     margin-bottom: 13px;
     transition: 0.25s;
     cursor: pointer;
