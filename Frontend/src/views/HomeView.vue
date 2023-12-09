@@ -52,7 +52,7 @@ export default {
                         parsedDate.setHours(0, 0, 0, 0);
                         const diff = parsedDate.getTime() - date.getTime();
                         if (diff >= 0 && diff <= 518400000) {
-                            var day = parsedDate.getDay() - 1;
+                            let day = parsedDate.getDay() - 1;
                             if (day == -1 || day > 4){
                                 day = 1;
                             }
@@ -73,7 +73,7 @@ export default {
             fetch("http://10.8.0.4:3000/api/homework/" + id, requestOptions)
                 .then(response => response.json())
                 .then(data => {
-                    console.log(data);
+                    
                 }
             );
         },
@@ -82,10 +82,10 @@ export default {
     computed: {
         tbody() {
             const tbody = document.createElement("tbody");
-            var biggest = 0;
-            for (var items in this.data) {
+            let biggest = 0;
+            for (let items in this.data) {
                 items = parseInt(items);
-                for (var item in this.data[items]) {
+                for (let item in this.data[items]) {
                     item = parseInt(item);
                     if (item + 1 > biggest) {
                         biggest = item + 1;
@@ -175,10 +175,10 @@ export default {
 </table>
 
 <Teleport to="body">
-  <CreateHomeworkModal :show="showCreateHomeworkModal" @close="showCreateHomeworkModal = false" @update="getData(0)">
-    <template #header>
-    </template>
-  </CreateHomeworkModal>
+    <CreateHomeworkModal :show="showCreateHomeworkModal" @close="showCreateHomeworkModal = false" @update="getData(0)">
+        <template #header>
+        </template>
+    </CreateHomeworkModal>
 </Teleport>
 
 </template>

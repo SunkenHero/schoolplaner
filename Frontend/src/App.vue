@@ -27,7 +27,6 @@ export default {
     mounted: function () {
         this.timer = setInterval(() => {
             this.check()
-            console.log(this.checks)
         }, 500)
     },
 

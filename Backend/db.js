@@ -1,12 +1,13 @@
 const crypto = require('crypto')
 const sqlite3 = require('sqlite3').verbose();
 const format = require('date-format');
+const jwt = require('jsonwebtoken');
 const db = new sqlite3.Database('db/userdb.sqlite');
 
 db.serialize(() => {
     db.run("CREATE TABLE IF NOT EXISTS users (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, password TEXT, uuid TEXT)");
 
-    db.run("CREATE TABLE IF NOT EXISTS homework (id INTEGER PRIMARY KEY AUTOINCREMENT,fach TEXT, name TEXT, description TEXT, fertig BOOL default 0, createdate DATE default current_timestamp, date DATE)")
+    db.run("CREATE TABLE IF NOT EXISTS homework (id INTEGER PRIMARY KEY AUTOINCREMENT,fach TEXT, name TEXT, description TEXT, fertig BOOL default 0, createdate DATE default current_timestamp, date DATE, author TEXT)")
     
     exports.createUser = function createUser(name, password) {
         db.get("SELECT id FROM users WHERE name = ?", name, (err, row) => {
@@ -132,18 +133,24 @@ db.serialize(() => {
     }
 
     exports.createHomework = function createHomework(req, callback) {
+        const token = req.header('Authorization').replace('Bearer ', '');
+        const decoded = jwt.decode(token);
+
         const fach = req.body.fach;
         const name = req.body.name;
         const description = req.body.description;
         const date = req.body.date;
+        const author = decoded.name;
 
         var Date1 = new Date(date);
         Date1 = format('yyyy-MM-dd', Date1);
-        db.get("INSERT INTO homework (fach, name, description, date) VALUES (?, ?, ?,?)", fach, name, description, Date1, (err, row) => {
+        db.get("INSERT INTO homework (fach, name, description, date, name) VALUES (?, ?, ?, ?, ?)", fach, name, description, Date1, author , (err, row) => {
             if (err) {
                 console.error(err);
                 callback(err,false);
             } else {
+                console.log(author);
+                
                 callback(null,true);
             }
         });

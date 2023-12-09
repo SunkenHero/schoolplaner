@@ -1,6 +1,4 @@
 <script>
-import router from '../router'
-
 export default {
   props: {
     show: Boolean
@@ -21,23 +19,23 @@ export default {
         this.$emit('close')
     },
     createhomework(){
-        if(this.name == "" || this.description == "" || this.date == "" || this.fach == ""){
-            alert("You must fill out every field!");
-            return
-        }
-        const requestOptions = {
-            method: "POST",
-            headers: { "Content-Type": "application/json",
-                        "Authorization": "Bearer " + localStorage.getItem('token') },
-            body: JSON.stringify({ name: this.name, description: this.description, date: this.date, fach: this.fach })
-        };
-        
-        fetch("http://10.8.0.4:3000/api/homework", requestOptions)
-            .then(response => response.json())
-            .then(data => {
-                console.log(data)
-            });
-        this.close()
+            if(this.name == "" || this.description == "" || this.date == "" || this.fach == ""){
+                alert("You must fill out every field!");
+                return;
+            }
+            const requestOptions = {
+                method: "POST",
+                headers: { "Content-Type": "application/json",
+                            "Authorization": "Bearer " + localStorage.getItem('token') },
+                body: JSON.stringify({ name: this.name, description: this.description, date: this.date, fach: this.fach })
+            };
+            
+            fetch("http://10.8.0.4:3000/api/homework", requestOptions)
+                .then(response => response.json())
+                .then(data => {
+                    console.log(data)
+                });
+            this.close()
 
 
         //todo reload tbody
@@ -60,7 +58,7 @@ export default {
                 <input placeholder="Description" v-model="description" required/>
                 <br />
                 <select v-model="fach" required>
-                    <option value="">--Please choose an option--</option>
+                    <option value="" disabled>--Please choose an option--</option>
                     <option v-for="subject in subjects" :key="subject" :value="subject">{{ subject }}</option>
                     <option value="other">Sonstiges</option>
                 </select>
