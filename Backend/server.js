@@ -1,13 +1,21 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const auth = require('./auth.js');
-const db = require('./db.js');
 const cors = require('cors');
+const SocketServer = require('ws').Server;
+
+const homeworkRoute = require('./routes/homework.js');
 
 const app = express();
 
 app.use(bodyParser.json());
-app.use(cors());
+
+const corsOptions = {
+    origin: 'http://10.8.0.4:50000',
+    optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
+  }
+
+app.use(cors(corsOptions));
 
 app.post('/auth', auth.Auth );
 
@@ -19,96 +27,7 @@ app.get('/api', (req, res) => {
 
 app.use('/api/*', auth.isAuth);
 
-app.get('/api/homework', async (req, res) => {
-    db.getAllHomework((err, result)=>{
-        if(err) {
-            res.json({message: "Error"})
-        } else {
-            res.json(result)
-        }
-    })
-});
-
-app.get('/api/homework/unfinished', async (req, res) => {
-    db.getUnfinishedHomework((err, result)=>{
-        if(err) {
-            res.json({message: "Error"})
-        } else {
-            res.json(result)
-        }
-    })
-});
-
-app.get('/api/homework/:id', async (req, res) => {
-    db.getHomework(req, (err, result)=>{
-        if (err) {
-            res.json({message: "Error"})
-        } else {
-            res.json(result)
-        }
-        });
-});
-
-app.get('/api/homework/:year/:month/:day', async (req, res) => {
-    db.getHomeworkByDate(req, (err, result)=>{
-        if (err) {
-            res.json({message: "Error"})
-        } else {
-            res.json(result)
-        }
-        });
-});
-
-app.get('/api/homework/:year/:month/:day/unfinished', async (req, res) => {
-    db.getHomeworkByDateUnFinished(req, (err, result)=>{
-        if (err) {
-            res.json({message: "Error"})
-        } else {
-            res.json(result)
-        }
-        });
-});
-
-
-app.post('/api/homework', async (req, res) => {
-    db.createHomework(req, (err, result)=>{
-        if (err) {
-            res.json({message: "Error"})
-        } else {
-            res.json({message: "Success"})
-        }
-    });
-});
-
-app.put('/api/homework/:id/', async (req, res) => {
-    db.updateHomework(req, (err, result)=>{
-        if (err) {
-            res.json({message: "Error"})
-        } else {
-            res.json({message: "Success"})
-        }
-    });
-});
-
-app.patch('/api/homework/:id/', async (req, res) => {
-    db.checkHomework(req, (err, result)=>{
-        if (err) {
-            res.json({message: "Error"})
-        } else {
-            res.json({message: "Success"})
-        }
-    });
-});
-
-app.delete('/api/homework/:id/', async (req, res) => {
-    db.deleteHomework(req, (err, result)=>{
-        if (err) {
-            res.json({message: "Error"})
-        } else {
-            res.json({message: "Success"})
-        }
-    });
-});
+app.use('/api/homework/',homeworkRoute);
 
 
 
@@ -120,7 +39,22 @@ app.delete('/api/homework/:id/', async (req, res) => {
 
 const port = process.env.PORT || 3000;
 
-app.listen(port, () => {
+const server = app.listen(port, () => {
   console.log(`Server running on http://localhost:${port}`);
 });
 
+//idee aus https://dzone.com/articles/static-content-rest-endpoints-and-websockets-with
+
+const wss = new SocketServer({ server});
+
+wss.on('connection', function connection(ws) {
+    console.log("connection ...");
+
+    //on connect message
+    ws.on('message', function incoming(message) {
+        console.log('received: %s', message);
+        wss.emit('message', message);
+    });
+
+    ws.send('message from server at: ' + new Date());
+});
