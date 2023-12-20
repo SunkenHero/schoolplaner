@@ -12,7 +12,6 @@
     components: { Text },
     methods: {
         login() {
-            console.log(this.name + " " + this.passwort);
             const requestOptions = {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
@@ -24,8 +23,8 @@
                 .then(data => {
                     localStorage.setItem('token', data.token)
                     console.log(localStorage.getItem('token'))
-                });
-            router.push('/')
+                    router.push('/')
+                });  
         }
     }
 }
@@ -114,7 +113,7 @@ input {
 }
 
 button:hover {
-  background-color: hsla(160, 70%, 37%, 1);
+    background-color: hsla(160, 70%, 37%, 1);
 }
 
 button:active {
