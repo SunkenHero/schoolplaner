@@ -29,8 +29,6 @@ app.use('/api/*', auth.isAuth);
 
 app.use('/api/homework/',homeworkRoute);
 
-
-
 /*app.get('/decode', (req, res) => {
   const token = req.header('Authorization').replace('Bearer ', '');
   const decoded = jwt.decode(token);

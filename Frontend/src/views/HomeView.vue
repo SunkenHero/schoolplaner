@@ -34,49 +34,29 @@ export default {
                 headers: { "Content-Type": "application/json", "Authorization": "Bearer " + localStorage.getItem('token')},
             };
 
-            const date = this.newdate;
-            date.setHours(0, 0, 0, 0);
-
-            date.setDate(date.getDate() + weekoffset * 7);
-
-            this.data = [[], [], [], [], []];
-
-            const datestr = date.toISOString().split('T')[0].split('-');
-            fetch(`http://10.8.0.4:3000/api/homework/${datestr[0]}/${datestr[1]}/${datestr[2]}`, requestOptions)
+            fetch("http://10.8.0.4:3000/api/homework", requestOptions)
                 .then(response => response.json())
                 .then(data => {
+                    const date = this.date
                     date.setHours(0, 0, 0, 0);
                     date.setDate(date.getDate() - 2);
                     for (const item of data) {
                         const parsedDate = new Date(item.date);
                         parsedDate.setHours(0, 0, 0, 0);
-                        const diff = parsedDate.getTime() - date.getTime();
-                        if (diff >= 0 && diff <= 518400000) {
-                            let day = parsedDate.getDay() - 1;
-                            if (day == -1 || day > 4){
-                                day = 1;
+                        if (date.getFullYear() == parsedDate.getFullYear() && date.getMonth() == parsedDate.getMonth()) {
+                            const diff = parsedDate.getTime() - date.getTime();
+                            if (diff >= 0 && diff <= 518400000) {
+                                var day = parsedDate.getDay() - 1;
+                                if (day == -1 || day > 4){
+                                    day = 1;
+                                }
+                                this.data[day].push(item);
                             }
-                            this.data[day].push(item);
                         }
                     }
                 }
             );
-        },
-        
-        deleteHomework(id){
-            const requestOptions ={
-                method: "DELETE",
-                headers: { "Content-Type": "application/json",
-                            "Authorization": "Bearer " + localStorage.getItem('token')},
-            };
-
-            fetch("http://10.8.0.4:3000/api/homework/" + id, requestOptions)
-                .then(response => response.json())
-                .then(data => {
-                    
-                }
-            );
-        },
+        }
     },
 
     computed: {
@@ -96,42 +76,42 @@ export default {
                 const row = document.createElement("tr");
                 for (let j = 0; j < 5; j++) {
                     const cell = document.createElement("td");
-                    const title = document.createElement("span");
-                    const subtitle = document.createElement("span");
-                    const lineBreak = document.createElement("br");
-                    const div = document.createElement("div");
-                    title.classList.add("cell-title");
-                    subtitle.classList.add("cell-subtitle");
-                    try {
-                        const name = this.data[j][i].name;
-                        if (name == null) {
-                            title.textContent = "No name set";
-                            title.style.fontStyle = "italic";
-                            
-                        } else {
-                            title.textContent = name;
-                        }
-                        cell.appendChild(title);
-                        cell.appendChild(lineBreak);
-                        
-                        const description = this.data[j][i].description;
-                        if (description == null) {
-                            subtitle.textContent = "No description set";
-                            subtitle.style.fontStyle = "italic";
-                        } else {
-                            subtitle.textContent = description;
-                        }
-
-                        div.appendChild(subtitle);
-                        div.classList.add("subtitle-div");
-            
-                        cell.appendChild(div);
-                    } catch (error) {
-                        
-                    }
-                    if (j + 1 == this.selectday) {
-                        cell.classList.add("highlighted");
-                    }
+                    cell.textContent = this.data[0][i].name;
+                    row.appendChild(cell);
+                } catch (error) {
+                    const cell = document.createElement("td");
+                    row.appendChild(cell);
+                }
+                try {
+                    const cell = document.createElement("td");
+                    cell.textContent = this.data[1][i].name;
+                    row.appendChild(cell);
+                } catch (error) {
+                    const cell = document.createElement("td");
+                    row.appendChild(cell);
+                }
+                try {
+                    const cell = document.createElement("td");
+                    cell.textContent = this.data[2][i].name;
+                    row.appendChild(cell);
+                } catch (error) {
+                    const cell = document.createElement("td");
+                    row.appendChild(cell);
+                }
+                try {
+                    const cell = document.createElement("td");
+                    cell.textContent = this.data[3][i].name;
+                    row.appendChild(cell);
+                } catch (error) {
+                    const cell = document.createElement("td");
+                    row.appendChild(cell);
+                }
+                try {
+                    const cell = document.createElement("td");
+                    cell.textContent = this.data[4][i].name;
+                    row.appendChild(cell);
+                } catch (error) {
+                    const cell = document.createElement("td");
                     row.appendChild(cell);
                 }
                 tbody.appendChild(row);
@@ -246,68 +226,9 @@ td:hover {
     cursor: pointer;
 }
 
-tbody .cell-title {
-    font-size: 22px;
-}
-
-tbody .cell-subtitle {
-    font-size: 14px;
-    overflow-wrap: break-word;
-    overflow: hidden;
-    display: -webkit-box;
-    line-clamp: 2;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-}
-
-tbody .subtitle-div {
-    margin-left: 8px;
-}
-
-.button-layout {
-    width: 100%;
-    height: 100%;
-    display: flex;
-    justify-content: left;
-}
-
-.button-layout .createhomework {
-    width: 200px;
-    height: 40px;
-    font-size: 20px;
-    padding-bottom: 3px;
-    background-color: var(--table-accent);
-    border: 0px;
-    border-radius: 5px;
-    margin-bottom: 13px;
-    transition: 0.25s;
-    cursor: pointer;
-    color: var(--table-white-text);
-    font-weight: 600;
-    margin: 0px 10px;
-}
-
-.button-layout .pageselect {
-    width: 40px;
-    height: 40px;
-    font-size: 20px;
-    padding-bottom: 3px;
-    background-color: var(--table-accent);
-    border: 0px;
-    border-radius: 5px;
-    margin-bottom: 13px;
-    transition: 0.25s;
-    cursor: pointer;
-    padding-bottom: 4px;
-    color: var(--table-white-text);
-}
-
-.button-layout button:hover {
-    background-color: hsla(160, 70%, 37%, 1);
-}
-
-.button-layout button:active {
-    background-color: hsla(160, 45%, 37%, 1);
+tr td:empty {
+	border-bottom: 0px;
+    cursor: auto;
 }
 
 </style>
