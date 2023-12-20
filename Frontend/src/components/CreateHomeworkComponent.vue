@@ -177,9 +177,3 @@ select {
 }
 
 </style>
-    
-</script>
-
-<template>
-
-</template>
