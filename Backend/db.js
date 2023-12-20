@@ -1,13 +1,8 @@
 const sqlitedb = require('./db/sqlitedb.js');
 const mysqldb = require('./db/mysql.js');
 
-const dotenv = require('dotenv');
-dotenv.config();
+require('dotenv').config();
 
-const usemysql = process.env.USE_MYSQL;
+const usemysql = process.env.USE_MYSQL || true;
 
-//if(usemysql == true){
-    module.exports = mysqldb;
-/*}else{
-    module.exports = sqlitedb;
-}*/
+module.exports = mysqldb;

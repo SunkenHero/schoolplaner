@@ -61,7 +61,9 @@ exports.auth = function auth(name, password, callback) {
             console.error(err.message);
             callback(false, err);
         } else {
-            callback(true, row);
+
+            console.log(row);
+            callback(!!row, row);
         }
     });
 }
@@ -144,6 +146,7 @@ exports.getHomeworkByDateUnFinished = function getHomeworkByDateUnFinished(req, 
 }
 
 exports.createHomework = function createHomework(req, callback) {
+    console.log(req.header('Authorization'));
     const token = req.header('Authorization').replace('Bearer ', '');
     const decoded = jwt.decode(token);
 
@@ -152,6 +155,8 @@ exports.createHomework = function createHomework(req, callback) {
     const description = req.body.description;
     const date = req.body.date;
     const author = decoded.name;
+
+    console.log(fach, name, description, date, author);
 
     var Date1 = new Date(date);
 
